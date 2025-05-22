@@ -42,7 +42,7 @@ Terdapat beberapa tahapan yang diperlukan untuk mencapai tujuan proyek tersebut 
 4. Melakukan Evaluasi dengan menggunakan metrik Akurasi, Precision, Recall dan F1 Score
 
 ## **3. Data Understanding**
-Dataset yang digunakan merupakan dataset berjudul "Common Heart Disease (4 Hospitals)  yang dapat diakses melalui kaggle dengan link berikut ini [Common Heart Disease Dataset( https://www.kaggle.com/datasets/denysskyrda/common-heart-disease-data-4-hospitals]. Dataset ini terdiri dari 920 Baris dengan data pasien dengan parameter berupa variabel yang relevan dengan penyakit jantung.
+Dataset yang digunakan merupakan dataset berjudul "Common Heart Disease (4 Hospitals)  yang dapat diakses melalui kaggle dengan link berikut ini [Common Heart Disease Dataset]( https://www.kaggle.com/datasets/denysskyrda/common-heart-disease-data-4-hospitals). Dataset ini terdiri dari 920 Baris dengan data pasien dengan parameter berupa variabel yang relevan dengan penyakit jantung.
 
 ### Variabel-variabel pada Dataset
 Berikut adalah variabel-variabel yang terdapat dalam dataset:
@@ -62,5 +62,29 @@ Berikut adalah variabel-variabel yang terdapat dalam dataset:
 | 12    | ca              | Jumlah pembuluh darah utama yang diwarnai oleh fluoroskopi                                         | 0-3                                                   |
 | 13    | thal            | Kelainan thalassemia                                                                               | 0: Normal, 1: Fixed defect, 2: Reversible defect  |
 | 14    | target          | Diagnosis penyakit jantung                                                                         | 1 = penyakit jantung, 0 = tidak ada penyakit jantung |
+| 15    | Source Tag        | Data ini hanya berisi nama rumah sakit data pasien diambil, namun dalam pengerjaan model kita tidak menggunakan data ini | 
+
+Pada semua kolom tersebut terdapat 13 kolom dengan tipe data float, 1 kolom dengan tipe data int dan 1 kolom dengan data kategorikal. Pada pembuatan model ini tidak digunakan data _Sourge Tag_ dengan alasan fokus utama prediksi hanya untuk menganalisis adanya penyakit jantung atau tidak pada pasien.
+
+### Handling Missing Value
+pada tahapan ini kita dapat melakukan pengecekan missing value dalam dataset tersebut diantaranya menggunakan funsgi .`isnull().sum()` untuk mengetahui missing value di setiap kolom
+![image](https://github.com/user-attachments/assets/a5eff07a-8f93-4d93-b740-df64a41add98)
+Berdasarkan output diatas tidak ditemukan adanya missing value, maka dari itu kita tidak perlu melakukan eksekusi drop atau mengisi nilai NaN pada data karena semua data terisi dengan baik sehingga tidak diperlukan adanya penanganan missing value.
+
+### Handling Outlier
+Saat melakukan pengecekan statistik deskriptif pada dataset, terdeteksi indikasi  adanya outlier pada beberapa variabel, terutama pada trestbps (tekanan darah), chol (kolesterol), dan oldpeak. Dalam menangani outlier, disini menggunakan metode IQR+Median Replacement untuk mempertahankan jumlah data.
+![image](https://github.com/user-attachments/assets/36271e84-a488-495b-9d9e-5077c0333ff9)
+![image](https://github.com/user-attachments/assets/c833b939-755f-4d55-a43d-e2f79c5ecfcc)
+dari yang kita lihat diatas ada beberapa kemungkinan data yang mengalami outlier diantaranya
+*   trestbps (tekanan darah) : alasannya karena tekanan darah di nilai 0 pada kolom min sangat tidak normal dalam medis
+*   chol (kolesterol) : alasannya karena kolesterol berada di nilai 0 pada kolom min sangat tidak normal dalam medis
+Setelah Outlier ditangani data dianggap sudah terdistribusi dengan lebih baik
+![image](https://github.com/user-attachments/assets/d7005e9f-5428-4b38-9a9d-256a297f4af4)
+
+### Handling Duplicate Data
+Pada tahapan ini kita dapat melakukan pengecekan duplikasi data dengan df.`duplicated().sum(). `Setelah melakukan pengecekan ternyata terdapat data yang mengalami duplikasi sebanyak 2 duplikasi sehingga program menghapus data yang duplikat dengan` .drop_duplicates()` dan jumlah data sekatang menjadi 918 baris.
+
+
+
 
 
