@@ -97,7 +97,7 @@ Hasil Correlation Map diatas beberikan beberapa informasi yaitu :
 *   Pada hasil tersebut dapat dilihat bahwa jenis kelamin laki laki (sex=1) memiliki resiko penyakit jantung yang lebih tinggi dibandingkan perempuan.
 
 
-## **3. Data Preparation**
+## **4. Data Preparation**
 ### Data Splitting
 Dataset tersebut dibagi menjadi data latih (train) dan data uji (testing) dengan proporsi 80:20. Hasil pembagian menghasilkan 734 data training dan 184 data testing.
 ```bash  
@@ -122,8 +122,59 @@ X_test = scaler.transform(X_test)
 ```
 
 
+## **5. Modelling**
+Algoritma yang dipilih dan digunakan untuk proyek ini ditekankan dengan algoritma klasifikasi Random Forest, Logistic Regression dan K-Nearest Neighbour untuk melakukan perbandingan mana performa model yang lebih baik untuk memprediksi dataset ini
 
+####1. Random Forest
+Pada permodelan ini yang saya lakukan adalah :
+* Memanfaatkan library scikit-learn dan
+*   Menggunakan fungsi `RandomForestClassifier()`
+* Parameteer yang digunakan adalah `random_state=42` yang artinya membuat model dengan random seed agar hasil yang diharapkan bisa konsiste
+```bash  
+from sklearn.ensemble import RandomForestClassifier
+# Inisialisasi dan latih model Random Forest
+rf_model = RandomForestClassifier(random_state=42)
+rf_model.fit(X_train, y_train)
 
+# Prediksi
+y_pred_dt = rf_model.predict(X_test)
+```
+#### 2. Logistic Regression
+Pada permodelan ini yang saya lakukan adalah :
+* Memanfaatkan library scikit-learn dan
+*   Menggunakan fungsi `LogisticRegression()`
+* Parameteer yang digunakan adalah random_state=42 yang artinya membuat model dengan random seed agar hasil yang diharapkan bisa konsisten
+```bash  
+from sklearn.linear_model import LogisticRegression
+# Inisialisasi dan latih model Logistic Regression
+lr_model = LogisticRegression(random_state=42)
+lr_model.fit(X_train, y_train)
 
+# Prediksi
+y_pred_lr = lr_model.predict(X_test)
+```
+#### 3. K-Nearest Neighbour
+Pada permodelan ini yang saya lakukan adalah :
+* Memanfaatkan library scikit-learn dan
+*   Menggunakan fungsi `KNeighborsClassifier() dengan parameter default yang nantinya disimpan ke variabel knn_model
+```bash  
+from sklearn.neighbors import KNeighborsClassifier
+# Inisialisasi dan latih model KNN
+knn_model = KNeighborsClassifier()
+knn_model.fit(X_train, y_train)
 
+# Prediksi
+y_pred_knn = knn_model.predict(X_test)
+```
+Pemilihan Model Terbaik
+Berdasarkan hasil evaluasi, ketiga model memberikan hasil performa yang baik dengan akurasi di atas 80%. Perbandingan performa model adalah sebagai berikut:
+| Model                     | Accuracy | F1-Score |
+|---------------------------|----------|----------|
+| Random Forest             | 0.8424   | 0.8415   |
+| Logistic Regression       | 0.8207   | 0.8200   |
+| K-Nearest Neighbors (KNN) | 0.8424   | 0.8415   |
+
+![gambar1](https://github.com/user-attachments/assets/7dfc6659-9b27-404a-a95f-df9c5000c002=300x)
+![gambar2](https://github.com/user-attachments/assets/4e871694-cd8d-4a1b-8f90-d95778de3d25=300x)
+![gambar3](https://github.com/user-attachments/assets/249bd675-17c3-4dc2-877d-b46c565a6ec5=300x)
 
