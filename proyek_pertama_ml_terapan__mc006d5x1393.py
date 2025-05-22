@@ -105,10 +105,8 @@ sns.boxplot(x=df['trestbps'])
 
 sns.boxplot(x=df['chol'])
 
-sns.boxplot(x=df['oldpeak'])
-
 import matplotlib.pyplot as plt
-outlier_cols = ['trestbps', 'chol','oldpeak']
+outlier_cols = ['trestbps', 'chol']
 
 for col in outlier_cols:
     # Hitung kuartil pertama (Q1) dan kuartil ketiga (Q3)
@@ -213,7 +211,10 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 # Cek ukuran data
 print(f"Training set: {X_train.shape}, Testing set: {X_test.shape}")
 
-"""Langkah kedua pada tahapan ini saya melakukan normalisasi menggunakan `StandardScaler()` dengan tujuan meningkatkan hasil prediksi lebih akurat dan stabil"""
+"""Langkah kedua pada tahapan ini saya melakukan normalisasi menggunakan `StandardScaler()` dengan tujuan meningkatkan hasil prediksi lebih akurat dan stabil
+
+
+"""
 
 # normalisasi
 from sklearn.preprocessing import StandardScaler
@@ -276,7 +277,7 @@ lr_model = LogisticRegression(random_state=42)
 lr_model.fit(X_train, y_train)
 
 # Prediksi
-y_pred_dt = lr_model.predict(X_test)
+y_pred_lr = lr_model.predict(X_test)
 
 """K-Nearest Neighbors
 
@@ -416,5 +417,12 @@ Keduanya memiliki jumlah prediksi yang sama persis yaitu
 
 #### Kesimpulan Akhir
 
-Kesimpulannya dari keseluruhan model, yang paling bagus untuk di terapkan pada dataset ini adalah model dengan Logistic Regression karena memiliki akurasi dan F1-Score yang tinggi di angka 0.83 dan cenderunh lebih stabil. Namun jika itu diambil berdasarkan Confussion Matrix maka dalam meminimalisir deteksi pasien lebih akurat disarankan menggunakan KNN karena model KNN memberikan performa yang baik dan mengurangi False Negatif
+Kesimpulannya dari keseluruhan model, yang paling bagus untuk di terapkan pada dataset ini adalah model dengan Random Forest karena memiliki akurasi dan F1-Score yang tinggi di angka 0.83 dan cenderunh lebih stabil. Namun jika itu diambil berdasarkan Confussion Matrix maka dalam meminimalisir deteksi pasien lebih akurat disarankan menggunakan KNN karena model KNN memberikan performa yang baik dan mengurangi False Negatif
 """
+
+!git config --global user.name "nisrinaftmh"
+!git config --global user.email "icha2810gmail.com"
+
+# Commented out IPython magic to ensure Python compatibility.
+!git clone https://github.com/nisrinaftmh/ML-Terapan-Submission-1.git
+# %cd ML-Terapan-Submission-1
