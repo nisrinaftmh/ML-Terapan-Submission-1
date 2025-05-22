@@ -195,7 +195,7 @@ Berdasarkan hasil Confussion Matrix diperoleh kesimpulan berikut ini :
 * False Positive sedikit berkurang dari 19 menjadi 18.
 
 ## **7. Kesimpulan**
-Pada seluruh proses pengembangan Model Machine Learning untuk Prediksi Penyakit jantung dapat disimpulkan bahwa ketiga model tersebut model yaitu Random Forest dengan Skor Accuracy (0.8369) dan F1-Score (0.8364) karena hasilnya lebih komperhensif berdasarkan hasilnya.
+Pada seluruh proses pengembangan Model Machine Learning untuk Prediksi Penyakit jantung dapat disimpulkan bahwa ketiga model tersebut model yaitu Random Forest dengan Skor Accuracy (0.8369) dan F1-Score (0.8364) karena hasilnya lebih komperhensif.
 
 ## **Referensi**
 Rahmada, A. ., & Susanto, E. R. (2025). Peningkatan Akurasi Prediksi Penyakit Jantung dengan Teknik SMOTEENN pada Algoritma Random Forest. _Jurnal Pendidikan Dan Teknologi Indonesia_, 4(12), 795-803. https://doi.org/10.52436/1.jpti.524
