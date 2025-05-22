@@ -81,10 +81,46 @@ dari yang kita lihat diatas ada beberapa kemungkinan data yang mengalami outlier
 *   trestbps (tekanan darah) : alasannya karena tekanan darah di nilai 0 pada kolom min sangat tidak normal dalam medis
 *   chol (kolesterol) : alasannya karena kolesterol berada di nilai 0 pada kolom min sangat tidak normal dalam medis
 Setelah Outlier ditangani data dianggap sudah terdistribusi dengan lebih baik
+
 ![image](https://github.com/user-attachments/assets/d7005e9f-5428-4b38-9a9d-256a297f4af4)
 
 ### Handling Duplicate Data
 Pada tahapan ini kita dapat melakukan pengecekan duplikasi data dengan df.`duplicated().sum(). `Setelah melakukan pengecekan ternyata terdapat data yang mengalami duplikasi sebanyak 2 duplikasi sehingga program menghapus data yang duplikat dengan` .drop_duplicates()` dan jumlah data sekatang menjadi 918 baris.
+
+### Data Distribution
+Berdasarkan grafik tersebut dapat kita lihat maypritas dari data numerik menunjukkan data yang terdistribusi mendekati normal 
+![image](https://github.com/user-attachments/assets/2a265610-3697-49ac-a244-1a66504d80a6)
+
+![image](https://github.com/user-attachments/assets/5b9c0d2a-bf9c-4f4a-a6f0-380da6d9a871)
+Hasil Correlation Map diatas beberikan beberapa informasi yaitu :
+*   Fitur yang sangat berkorelasi dengan label target adalah cp (nyeri dada), exang (nyeri dada saat berolahraga), oldpeak, thal (hasil tes thalassemia) dan ca (jumlah pembuluh darah).
+*   Pada hasil tersebut dapat dilihat bahwa jenis kelamin laki laki (sex=1) memiliki resiko penyakit jantung yang lebih tinggi dibandingkan perempuan.
+
+
+## **3. Data Preparation**
+### Data Splitting
+Dataset tersebut dibagi menjadi data latih (train) dan data uji (testing) dengan proporsi 80:20. Hasil pembagian menghasilkan 734 data training dan 184 data testing.
+---
+# Bagi dataset menjadi training (80%) dan testing (20%)
+X = df.drop('target', axis=1)
+y = df['target']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+
+# Cek ukuran data
+print(f"Training set: {X_train.shape}, Testing set: {X_test.shape}")
+---
+![image](https://github.com/user-attachments/assets/e0dc5028-7ad7-492d-b500-0a541e2729ab)
+
+## Normalisasi Data
+Langkah kedua pada tahapan ini saya melakukan normalisasi menggunakan `StandardScaler()` dengan tujuan meningkatkan hasil prediksi lebih akurat dan stabil
+
+---
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+---
 
 
 
