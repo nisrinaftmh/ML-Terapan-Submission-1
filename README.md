@@ -174,7 +174,7 @@ Berdasarkan hasil evaluasi, ketiga model memberikan hasil performa yang baik den
 | Logistic Regression       | 0.8207   | 0.8200   |
 | K-Nearest Neighbors (KNN) | 0.8424   | 0.8415   |
 
-![gambar1](https://github.com/user-attachments/assets/7dfc6659-9b27-404a-a95f-df9c5000c002=300x)
-![gambar2](https://github.com/user-attachments/assets/4e871694-cd8d-4a1b-8f90-d95778de3d25=300x)
-![gambar3](https://github.com/user-attachments/assets/249bd675-17c3-4dc2-877d-b46c565a6ec5=300x)
+![image](https://github.com/user-attachments/assets/7dfc6659-9b27-404a-a95f-df9c5000c002=300x)
+![image](https://github.com/user-attachments/assets/4e871694-cd8d-4a1b-8f90-d95778de3d25=300x)
+![image](https://github.com/user-attachments/assets/249bd675-17c3-4dc2-877d-b46c565a6ec5=300x)
 
