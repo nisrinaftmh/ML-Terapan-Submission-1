@@ -19,12 +19,6 @@ Manfaat yang dapat dirasakan pasien diantaranya:
 1. Mendeteksi dini risiko terkena serangan jantung serta memperhatikan pola hidup sejak awal untuk pencegahan
 2. Pasien dapat mendapat akses informasi yang lebih cepat dan mudah tanpa harus pemeriksaan yang mahal.
 
-## Referensi
-Rahmada, A. ., & Susanto, E. R. (2025). Peningkatan Akurasi Prediksi Penyakit Jantung dengan Teknik SMOTEENN pada Algoritma Random Forest. _Jurnal Pendidikan Dan Teknologi Indonesia_, 4(12), 795-803. https://doi.org/10.52436/1.jpti.524
-
-S. A. T. Al Azhima, D. Darmawan, N. F. Arief Hakim, I. Kustiawan, M. Al Qibtiya, dan N. S. Syafei, “Hybrid Machine Learning Model untuk memprediksi Penyakit Jantung dengan Metode Logistic Regression dan Random Forest”, j. teknologi terpadu, vol. 8, no. 1, hlm. 40–46, Jul 2022.
-
-
 ## **2. Business Understanding**
 ## Problem Statements
 1. Bagaimana cara mengembangkan model machine learning yang dapat memprediksi risiko penyakit jantung pada pasien berdasarkan data medis?
@@ -170,10 +164,41 @@ Pemilihan Model Terbaik
 Berdasarkan hasil evaluasi, ketiga model memberikan hasil performa yang baik dengan akurasi di atas 80%. Perbandingan performa model adalah sebagai berikut:
 | Model                     | Accuracy | F1-Score |
 |---------------------------|----------|----------|
-| Random Forest             | 0.8424   | 0.8415   |
-| Logistic Regression       | 0.8207   | 0.8200   |
-| K-Nearest Neighbors (KNN) | 0.8424   | 0.8415   |
+| Random Forest             | 0.8369   | 0.8364   |
+| Logistic Regression       | 0.8315   | 0.8308   |
+| K-Nearest Neighbors (KNN) | 0.8152   | 0.8145   |
 
+
+## **6. Evaluation**
+Proyek ini akan dievaluasi menggunakan beberapa metrik untuk menilai model klasifikasi, diantaranya :
+**1. Accuracy (Akurasi)** : Metrik ini mengukur proporsi prediksi dari total prediksi
+**2. F1-Score** : Metrik ini mengukur rata rata dari precission dan recal untuk melohat keseimbangan antara hasil false positive dan false negative dari hasil permodelan
+**3. Confusion Matrix** : Metrik ini memberikan gambaran detail tentang jumlah True Positive (TP), False Positive (FP), True Negative (TN), dan False Negative (FN). Evaluasi ini penting untuk memahami jenis kesalahan yang dilakukan model.
+
+Berdasarkan hasil _classification report _ diperoleh hasil dari Accuracy dan F1-Score pada masing masing model dilampirkan dibawah ini
 <img src="https://github.com/user-attachments/assets/7dfc6659-9b27-404a-a95f-df9c5000c002" width="300"/>
 <img src="https://github.com/user-attachments/assets/4e871694-cd8d-4a1b-8f90-d95778de3d25" width="300"/>
 <img src="https://github.com/user-attachments/assets/249bd675-17c3-4dc2-877d-b46c565a6ec5" width="300"/>
+
+Berdasarkan hasil Confussion Matrix diperoleh kesimpulan berikut ini :
+![image](https://github.com/user-attachments/assets/21c9e37d-a3e7-4dc0-8032-ed3d4fff3c88)
+1.Random Forest dan Logistic Regression memiliki hasil confusion matrix yang identik, menunjukkan pola prediksi yang sama:
+* 88 pasien dengan penyakit jantung terdeteksi dengan benar (TP)
+* 63 pasien tanpa penyakit jantung terdeteksi dengan benar (TN)
+* 14 pasien dengan penyakit jantung tidak terdeteksi (FN)
+* 19 pasien tanpa penyakit jantung diidentifikasi memiliki penyakit (FP)
+
+
+2. KNN menunjukkan performa yang lebih baik dalam beberapa aspek:
+* True Positive meningkat menjadi 91 (berhasil mendeteksi 3 pasien sakit lebih banyak)
+* False Negative berkurang dari 14 menjadi 11 (lebih sedikit pasien sakit yang tidak terdeteksi)
+* False Positive sedikit berkurang dari 19 menjadi 18.
+
+## **7. Kesimpulan**
+Pada seluruh proses pengembangan Model Machine Learning untuk Prediksi Penyakit jantung dapat disimpulkan bahwa ketiga model tersebut model yaitu Random Forest dengan Skor Accuracy (0.8369) dan F1-Score (0.8364) karena hasilnya lebih komperhensif berdasarkan hasilnya.
+
+## **Referensi**
+Rahmada, A. ., & Susanto, E. R. (2025). Peningkatan Akurasi Prediksi Penyakit Jantung dengan Teknik SMOTEENN pada Algoritma Random Forest. _Jurnal Pendidikan Dan Teknologi Indonesia_, 4(12), 795-803. https://doi.org/10.52436/1.jpti.524
+
+S. A. T. Al Azhima, D. Darmawan, N. F. Arief Hakim, I. Kustiawan, M. Al Qibtiya, dan N. S. Syafei, “Hybrid Machine Learning Model untuk memprediksi Penyakit Jantung dengan Metode Logistic Regression dan Random Forest”, j. teknologi terpadu, vol. 8, no. 1, hlm. 40–46, Jul 2022.
+
