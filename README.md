@@ -100,7 +100,7 @@ Hasil Correlation Map diatas beberikan beberapa informasi yaitu :
 ## **3. Data Preparation**
 ### Data Splitting
 Dataset tersebut dibagi menjadi data latih (train) dan data uji (testing) dengan proporsi 80:20. Hasil pembagian menghasilkan 734 data training dan 184 data testing.
----
+```bash  
 # Bagi dataset menjadi training (80%) dan testing (20%)
 X = df.drop('target', axis=1)
 y = df['target']
@@ -109,18 +109,19 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 # Cek ukuran data
 print(f"Training set: {X_train.shape}, Testing set: {X_test.shape}")
----
+```
 ![image](https://github.com/user-attachments/assets/e0dc5028-7ad7-492d-b500-0a541e2729ab)
 
 ## Normalisasi Data
 Langkah kedua pada tahapan ini saya melakukan normalisasi menggunakan `StandardScaler()` dengan tujuan meningkatkan hasil prediksi lebih akurat dan stabil
-
----
-from sklearn.preprocessing import StandardScaler
-scaler = StandardScaler()
-X_train = scaler.fit_transform(X_train)
+```bash  
+from sklearn.preprocessing import StandardScaler  
+scaler = StandardScaler()  
+X_train = scaler.fit_transform(X_train)  
 X_test = scaler.transform(X_test)
----
+```
+
+
 
 
 
