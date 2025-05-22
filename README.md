@@ -27,7 +27,7 @@ S. A. T. Al Azhima, D. Darmawan, N. F. Arief Hakim, I. Kustiawan, M. Al Qibtiya,
 
 ## **2. Business Understanding**
 ## Problem Statements
-1.Bagaimana cara mengembangkan model machine learning yang dapat memprediksi risiko penyakit jantung pada pasien berdasarkan data medis?
+1. Bagaimana cara mengembangkan model machine learning yang dapat memprediksi risiko penyakit jantung pada pasien berdasarkan data medis?
 2. Faktor-faktor apa saja yang paling berkorelasi dengan penyakit jantung berdasarkan analisis dataset?
 
 ## Goals
@@ -40,5 +40,27 @@ Terdapat beberapa tahapan yang diperlukan untuk mencapai tujuan proyek tersebut 
 2. Membuat permodelan Machine Learning untuk dataset yang digunakan dengan menggunakan permodelan Random Forest, Logistic Regression dan K-Nearest Neighbour.
 3. Menerapkan StandardSCaler dalam menormalisasi data agar meningkatkan akurasi model
 4. Melakukan Evaluasi dengan menggunakan metrik Akurasi, Precision, Recall dan F1 Score
+
+## **3. Data Understanding**
+Dataset yang digunakan merupakan dataset berjudul "Common Heart Disease (4 Hospitals)  yang dapat diakses melalui kaggle dengan link berikut ini [Common Heart Disease Dataset( https://www.kaggle.com/datasets/denysskyrda/common-heart-disease-data-4-hospitals]. Dataset ini terdiri dari 920 Baris dengan data pasien dengan parameter berupa variabel yang relevan dengan penyakit jantung.
+
+### Variabel-variabel pada Dataset
+Berikut adalah variabel-variabel yang terdapat dalam dataset:
+| No. | Nama Kolom      | Deskripsi                                                                                         | Nilai/Contoh                                            |
+|-------|-----------------|---------------------------------------------------------------------------------------------------|--------------------------------------------------------|
+| 1     | age             | Usia pasien dalam tahun                                                                           | Contoh: 55                                             |
+| 2     | sex             | Jenis kelamin pasien                                                                            | 1 = laki-laki, 0 = perempuan                            |
+| 3     | cp              | Tipe nyeri dada                                                                                 | 0: Typical angina, 1: Atypical angina, 2: Non-anginal pain, 3: Asymptomatic |
+| 4     | trestbps        | Tekanan darah istirahat dalam mm Hg                                                              | Contoh: 130                                            |
+| 5     | chol            | Kolesterol serum dalam mg/dl                                                                      | Contoh: 250                                            |
+| 6     | fbs             | Gula darah puasa > 120 mg/dl                                                                     | 1 = benar, 0 = salah                                  |
+| 7     | restecg        | Hasil elektrokardiografi istirahat                                                               | 0: Normal, 1: Abnormalitas ST-T, 2: Hipertrofi ventrikel kiri |
+| 8     | thalach         | Detak jantung maksimum yang dicapai                                                               | Contoh: 150                                            |
+| 9     | exang           | Angina yang dipicu oleh olahraga                                                                   | 1 = ya, 0 = tidak                                   |
+| 10    | oldpeak         | Depresi ST yang diakibatkan oleh olahraga relatif terhadap istirahat                                | Contoh: 1.5                                          |
+| 11    | slope           | Kemiringan segmen ST pada puncak olahraga                                                          | 0: Upsloping, 1: Flat, 2: Downsloping             |
+| 12    | ca              | Jumlah pembuluh darah utama yang diwarnai oleh fluoroskopi                                         | 0-3                                                   |
+| 13    | thal            | Kelainan thalassemia                                                                               | 0: Normal, 1: Fixed defect, 2: Reversible defect  |
+| 14    | target          | Diagnosis penyakit jantung                                                                         | 1 = penyakit jantung, 0 = tidak ada penyakit jantung |
 
 
