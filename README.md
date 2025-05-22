@@ -73,8 +73,10 @@ Berdasarkan output diatas tidak ditemukan adanya missing value, maka dari itu ki
 
 ### Handling Outlier
 Saat melakukan pengecekan statistik deskriptif pada dataset, terdeteksi indikasi  adanya outlier pada beberapa variabel, terutama pada trestbps (tekanan darah), chol (kolesterol), dan oldpeak. Dalam menangani outlier, disini menggunakan metode IQR+Median Replacement untuk mempertahankan jumlah data.
-![image](https://github.com/user-attachments/assets/36271e84-a488-495b-9d9e-5077c0333ff9)
-![image](https://github.com/user-attachments/assets/c833b939-755f-4d55-a43d-e2f79c5ecfcc)
+<p>
+  <img src="https://github.com/user-attachments/assets/36271e84-a488-495b-9d9e-5077c0333ff9" width="150" />
+  <img src="https://github.com/user-attachments/assets/c833b939-755f-4d55-a43d-e2f79c5ecfcc" width="150" />
+</p>
 dari yang kita lihat diatas ada beberapa kemungkinan data yang mengalami outlier diantaranya
 *   trestbps (tekanan darah) : alasannya karena tekanan darah di nilai 0 pada kolom min sangat tidak normal dalam medis
 *   chol (kolesterol) : alasannya karena kolesterol berada di nilai 0 pada kolom min sangat tidak normal dalam medis
