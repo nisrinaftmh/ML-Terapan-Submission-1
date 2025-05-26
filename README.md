@@ -119,11 +119,49 @@ X_test = scaler.transform(X_test)
 ## **5. Modelling**
 Algoritma yang dipilih dan digunakan untuk proyek ini ditekankan dengan algoritma klasifikasi Random Forest, Logistic Regression dan K-Nearest Neighbour untuk melakukan perbandingan mana performa model yang lebih baik untuk memprediksi dataset ini
 
-#### 1. Random Forest
-Pada permodelan ini yang saya lakukan adalah :
-* Memanfaatkan library scikit-learn dan
-*   Menggunakan fungsi `RandomForestClassifier()`
-* Parameteer yang digunakan adalah `random_state=42` yang artinya membuat model dengan random seed agar hasil yang diharapkan bisa konsiste
+### 1. Random Forest
+#### Cara Kerja
+
+Random Forest adalah algoritma ensemble learning yang menggabungkan multiple decision trees untuk membuat prediksi yang lebih akurat dan stabil. Algoritma ini bekerja dengan cara:
+- Bootstrap Sampling: Membuat beberapa subset data training secara random dengan replacement
+- Feature Randomness: Pada setiap node split, hanya subset random dari features yang dipertimbangkan  
+- Tree Construction: Membangun decision tree untuk setiap subset data
+- Voting Mechanism: Untuk klasifikasi, menggunakan majority voting dari semua trees
+
+#### Parameter:
+
+- random_state=42
+- n_estimators=100 (default)
+- max_depth=None (default)
+- min_samples_split=2 (default)
+- min_samples_leaf=1 (default)
+
+#### Tahapan Penyusunan Model:
+
+1. Dataset dibagi menjadi data latih dan uji (X_train, X_test, y_train, y_test).
+2. Model RandomForestClassifier diinisialisasi dengan parameter random_state=42.
+3. Model dilatih pada X_train dan y_train menggunakan metode fit().
+4. Prediksi dilakukan pada X_test menggunakan metode predict().
+5. Evaluasi dilakukan dengan membandingkan y_pred_dt dengan y_test.
+
+#### Kelebihan:
+
+- Mengurangi overfitting dibanding pohon keputusan tunggal
+- Mampu menangani data non-linear
+- Menyediakan informasi feature importance
+- Robust terhadap outliers dan noise
+
+#### Kekurangan:
+
+- Lebih lambat dibanding model sederhana 
+- Sulit untuk interpretasi secara keseluruhan
+- Membutuhkan lebih banyak memori
+
+#### Implementasi:
+
+- Model dilatih langsung pada data asli tanpa normalisasi, karena Random Forest tidak sensitif terhadap skala fitur.
+- Menggunakan random_state=42 untuk memastikan reproducibility hasil.
+
 ```bash  
 from sklearn.ensemble import RandomForestClassifier
 # Inisialisasi dan latih model Random Forest
@@ -133,11 +171,51 @@ rf_model.fit(X_train, y_train)
 # Prediksi
 y_pred_dt = rf_model.predict(X_test)
 ```
-#### 2. Logistic Regression
-Pada permodelan ini yang saya lakukan adalah :
-* Memanfaatkan library scikit-learn dan
-*   Menggunakan fungsi `LogisticRegression()`
-* Parameter yang digunakan adalah random_state=42 yang artinya membuat model dengan random seed agar hasil yang diharapkan bisa konsisten
+### 2. Logistic Regression
+#### Cara Kerja
+
+Logistic Regression adalah algoritma linear classifier yang menggunakan fungsi logistic (sigmoid) untuk memetakan nilai real ke probabilitas antara 0 dan 1. Cara kerja algoritma:
+- Linear Combination: Menghitung kombinasi linear dari input features: z = w₀ + w₁x₁ + w₂x₂ + ... + wₙxₙ
+- Sigmoid Function: Mengaplikasikan fungsi sigmoid: σ(z) = 1/(1 + e^(-z))
+- Probability Mapping: Mengkonversi output ke probabilitas kelas
+- Decision Boundary: Menggunakan threshold (biasanya 0.5) untuk klasifikasi final
+
+#### Parameter:
+
+- solver='lbfgs' (default)
+- max_iter=100 (default)
+- C=1.0 (default)
+- penalty='l2' (default)
+- random_state=42
+
+#### Tahapan Penyusunan Model:
+
+1. Dataset dibagi menjadi data latih dan uji (X_train, X_test, y_train, y_test).
+2. Model LogisticRegression diinisialisasi dengan parameter random_state=42.
+3. Model dilatih pada X_train dan y_train menggunakan metode fit().
+4. Prediksi dilakukan pada X_test menggunakan metode predict().
+5. Evaluasi dilakukan dengan membandingkan hasil prediksi dengan y_test.
+
+#### Kelebihan:
+
+- Sederhana dan cepat dalam training dan prediksi
+- Memberikan probabilitas output yang dapat diinterpretasi
+- Tidak memerlukan tuning parameter yang kompleks
+- Efisien untuk dataset besar
+- Memberikan koefisien yang dapat diinterpretasi
+
+#### Kekurangan:
+
+- Hanya cocok untuk masalah yang linearly separable
+- Sensitif terhadap outliers
+- Memerlukan feature scaling untuk performa optimal
+- Tidak dapat menangkap hubungan non-linear tanpa feature engineering
+
+#### Implementasi:
+
+- Model menggunakan solver 'lbfgs' yang cocok untuk dataset kecil hingga menengah
+- Parameter C=1.0 mengontrol strength regularization
+- Menggunakan random_state=42 untuk memastikan reproducibility hasil
 ```bash  
 from sklearn.linear_model import LogisticRegression
 # Inisialisasi dan latih model Logistic Regression
@@ -148,9 +226,49 @@ lr_model.fit(X_train, y_train)
 y_pred_lr = lr_model.predict(X_test)
 ```
 #### 3. K-Nearest Neighbour
-Pada permodelan ini yang saya lakukan adalah :
-* Memanfaatkan library scikit-learn dan
-*   Menggunakan fungsi `KNeighborsClassifier() dengan parameter default yang nantinya disimpan ke variabel knn_model
+#### Cara Kerja
+
+KNN adalah algoritma lazy learning yang melakukan klasifikasi berdasarkan kedekatan dengan data training. Proses kerja algoritma:
+- Distance Calculation: Menghitung jarak antara data test dengan semua data training
+- Neighbor Selection: Memilih k tetangga terdekat berdasarkan jarak yang dihitung
+- Majority Voting: Menggunakan voting mayoritas dari k tetangga untuk menentukan kelas
+- Tie Breaking: Menangani kasus seri dengan aturan tertentu
+
+#### Parameter:
+
+- n_neighbors=5 (default)
+- weights='uniform' (default)
+- algorithm='auto' (default)
+- metric='minkowski' (default)
+- p=2 (default)
+
+#### Tahapan Penyusunan Model:
+
+1. Data fitur (X) dinormalisasi menggunakan StandardScaler karena KNN sensitif terhadap skala data.
+2. Dataset dibagi menjadi data latih dan uji (X_train, X_test, y_train, y_test).
+3. Model KNeighborsClassifier diinisialisasi dengan parameter default.
+4. Model dilatih pada X_train_scaled dan y_train.
+5. Prediksi dilakukan pada X_test_scaled dan evaluasi dengan y_test.
+
+#### Kelebihan:
+
+- Sederhana dan mudah diimplementasikan
+- Tidak memerlukan asumsi tentang distribusi data
+- Baik untuk menangkap hubungan lokal antar data
+- Efektif untuk dataset dengan pola yang kompleks
+
+#### Kekurangan:
+
+- Sensitif terhadap skala data (diperlukan normalisasi)
+- Performa menurun jika jumlah data besar atau berdimensi tinggi
+- Tidak memberikan interpretasi fitur
+- Komputasi prediksi lambat untuk dataset besar
+
+#### Implementasi:
+
+- Sebelum diterapkan, data dinormalisasi dengan StandardScaler
+- Menggunakan parameter default n_neighbors=5 dan metric Euclidean distance
+- Model dilatih pada data yang telah diskalakan (X_train_scaled, X_test_scaled)
 ```bash  
 from sklearn.neighbors import KNeighborsClassifier
 # Inisialisasi dan latih model KNN
@@ -176,6 +294,7 @@ Proyek ini akan dievaluasi menggunakan beberapa metrik untuk menilai model klasi
 **3. Confusion Matrix** : Metrik ini memberikan gambaran detail tentang jumlah True Positive (TP), False Positive (FP), True Negative (TN), dan False Negative (FN). Evaluasi ini penting untuk memahami jenis kesalahan yang dilakukan model.
 
 Berdasarkan hasil _classification report _ diperoleh hasil dari Accuracy dan F1-Score pada masing masing model dilampirkan dibawah ini
+
 <img src="https://github.com/user-attachments/assets/7dfc6659-9b27-404a-a95f-df9c5000c002" width="300"/>
 <img src="https://github.com/user-attachments/assets/4e871694-cd8d-4a1b-8f90-d95778de3d25" width="300"/>
 <img src="https://github.com/user-attachments/assets/249bd675-17c3-4dc2-877d-b46c565a6ec5" width="300"/>
@@ -194,9 +313,7 @@ Berdasarkan hasil Confussion Matrix diperoleh kesimpulan berikut ini :
 * False Negative berkurang dari 14 menjadi 11 (lebih sedikit pasien sakit yang tidak terdeteksi)
 * False Positive sedikit berkurang dari 19 menjadi 18.
 
-## Evaluation: Model Performance vs Business Understanding
-
-### Hubungan dengan Problem Statements
+### Evaluasi Bisnis
 
 1. **Bagaimana cara mengembangkan model machine learning yang dapat memprediksi risiko penyakit jantung?**  
    Problem berhasil dijawab melalui pengembangan dan evaluasi tiga model klasifikasi:
@@ -210,16 +327,15 @@ Berdasarkan hasil Confussion Matrix diperoleh kesimpulan berikut ini :
    - Evaluasi metrik klasifikasi (precision, recall, F1-score)
    - Analisis Confusion Matrix untuk interpretasi prediksi model
 
-2. **Faktor-faktor apa saja yang paling berkorelasi dengan penyakit jantung?**  
+2. **Bagaimana Hasil Prediksi yang dilakukan? Permodelan apa yang paling efektif untuk digunakan?**  
    Telah dijawab melalui:
-   - Analisis korelasi antar fitur
-   - Visualisasi distribusi data
-   - Feature importance dari Random Forest yang mengidentifikasi fitur-fitur dominan dalam prediksi penyakit jantung
+   - Evaluasi hasil menunjukkan bahwa random forest memiliki tingkat akurasi dan skor f1 paling tinggi dan stabil
+
 
 ### Capaian Goals
 
 1. **Model prediksi risiko penyakit jantung**  
-   Tercapai. Model Random Forest menjadi pilihan terbaik dari sisi akurasi dan F1-score. Logistic Regression menjadi alternatif baik karena recall yang tinggi dan interpretabilitas.
+   Tercapai. Model Random Forest menjadi pilihan terbaik dari sisi akurasi dan F1-score. Logistic Regression dan KNN menjadi alternatif baik karena recall yang tinggi dan interpretabilitas.
 
 2. **Identifikasi faktor risiko penyakit jantung**  
    Tercapai. Insight dari EDA dan analisis fitur menunjukkan keterkaitan kuat antara faktor medis (seperti chol, cp, thalach, dan age) dengan risiko penyakit jantung.
@@ -231,25 +347,14 @@ Berdasarkan hasil Confussion Matrix diperoleh kesimpulan berikut ini :
 - **Logistic Regression** menunjukkan recall tinggi (0.87), ideal untuk aplikasi medis di mana deteksi positif lebih diutamakan
 - **KNN** menunjukkan peningkatan pada TP (91 pasien berhasil dideteksi) dan pengurangan FP dibanding model lainnya
 
-### Insight dari Confusion Matrix
-
-- **Random Forest & Logistic Regression**:
-  - 88 pasien sakit terdeteksi dengan benar (True Positive)
-  - 63 pasien sehat terdeteksi dengan benar (True Negative)
-  - 14 pasien sakit tidak terdeteksi (False Negative)
-  - 19 pasien sehat salah diklasifikasikan sebagai sakit (False Positive)
-
-- **KNN**:
-  - TP meningkat menjadi 91, artinya mendeteksi 3 pasien sakit lebih banyak
-  - FP menurun dari 19 menjadi 18, sehingga kesalahan identifikasi pasien sehat juga berkurang
-
 ## **7. Kesimpulan**
 
-Model yang dikembangkan telah berhasil menjawab seluruh problem statement dan mencapai goals yang ditetapkan. Dari keseluruhan model, **Random Forest** merupakan model terbaik untuk diterapkan pada dataset ini karena memiliki akurasi dan F1-Score tertinggi, yaitu Accuracy sebesar **0.8369** dan F1-Score sebesar **0.8364**. 
+Model yang dikembangkan telah berhasil menjawab seluruh problem statement dan mencapai goals yang ditetapkan. Dari keseluruhan model, **Random Forest** merupakan model terbaik untuk diterapkan pada dataset ini karena memiliki akurasi dan F1-Score tertinggi, yaitu Accuracy sebesar **0.8369** dan F1-Score sebesar **0.8364**.
 
 Namun, jika dilihat dari hasil **Confusion Matrix**, model **K-Nearest Neighbors (KNN)** dapat dipertimbangkan karena mampu meminimalkan jumlah **False Negative**, yaitu kasus ketika pasien sakit tidak terdeteksi. Hal ini penting dalam konteks medis untuk mengurangi risiko kelalaian dalam mendeteksi pasien yang benar-benar sakit.
 
-Secara keseluruhan, evaluasi menunjukkan bahwa solusi yang diimplementasikan berdampak positif terhadap kualitas prediksi dan akurasi sistem deteksi dini penyakit jantung, serta layak digunakan sebagai alat bantu dalam proses **screening awal** di bidang medis.
+Secara keseluruhan, evaluasi menunjukkan bahwa solusi yang diimplementasikan berdampak positif terhadap kualitas prediksi dan akurasi sistem deteksi dini penyakit jantung, serta layak digunakan sebagai alat bantu dalam proses **screening penyakit jantung** di bidang medis.
+
 
 
 
