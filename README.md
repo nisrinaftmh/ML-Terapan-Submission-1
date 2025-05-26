@@ -22,7 +22,7 @@ Manfaat yang dapat dirasakan pasien diantaranya:
 ## **2. Business Understanding**
 ## Problem Statements
 1. Bagaimana cara mengembangkan model machine learning yang dapat memprediksi risiko penyakit jantung pada pasien berdasarkan data medis?
-2. Faktor-faktor apa saja yang paling berkorelasi dengan penyakit jantung berdasarkan analisis dataset?
+2. Bagaimana Hasil Prediksi yang dilakukan? Permodelan apa yang paling efektif untuk digunakan?
 
 ## Goals
 1. Membuat model machikne learning yang dapat memprediksi risiko penyakit jantung pada pasien
@@ -38,8 +38,20 @@ Terdapat beberapa tahapan yang diperlukan untuk mencapai tujuan proyek tersebut 
 ## **3. Data Understanding**
 Dataset yang digunakan merupakan dataset berjudul "Common Heart Disease (4 Hospitals)  yang dapat diakses melalui kaggle dengan link berikut ini [Common Heart Disease Dataset]( https://www.kaggle.com/datasets/denysskyrda/common-heart-disease-data-4-hospitals). Dataset ini terdiri dari 920 Baris dengan data pasien dengan parameter berupa variabel yang relevan dengan penyakit jantung.
 
+### Cek Ukuran Data
+Tahapan ini dilakukan untuk memahami isi dataset. hal pertama yang dilakukan adalah memahami dan mengecek isi dari dataset dengan menggunakan `.shape', .info() `dan `.describe()`
+``` df.shape```
+Output pada kode tersebut menunjukkan bahwa dataset terdiri dari 920 baris dan 15 kolom
+
+### Cek Informasi Data
+Disini kita akan melakukan pengecekan tipe data dan melihat informasi dataset dengan fungsi `.info`
+```
+# Melihat info dataset untuk mengetahui tipe data setiap kolom
+df.info()
+```
+
 ### Variabel-variabel pada Dataset
-Berikut adalah variabel-variabel yang terdapat dalam dataset:
+Berikut adalah Fitur yang terdapat dalam dataset:
 | No. | Nama Kolom      | Deskripsi                                                                                         | Nilai/Contoh                                            |
 |-------|-----------------|---------------------------------------------------------------------------------------------------|--------------------------------------------------------|
 | 1     | age             | Usia pasien dalam tahun                                                                           | Contoh: 55                                             |
@@ -60,12 +72,12 @@ Berikut adalah variabel-variabel yang terdapat dalam dataset:
 
 Pada semua kolom tersebut terdapat 13 kolom dengan tipe data float, 1 kolom dengan tipe data int dan 1 kolom dengan data kategorikal. Pada pembuatan model ini tidak digunakan data _Sourge Tag_ dengan alasan fokus utama prediksi hanya untuk menganalisis adanya penyakit jantung atau tidak pada pasien.
 
-### Handling Missing Value
+### Cek Missing Value
 pada tahapan ini kita dapat melakukan pengecekan missing value dalam dataset tersebut diantaranya menggunakan funsgi .`isnull().sum()` untuk mengetahui missing value di setiap kolom
 ![image](https://github.com/user-attachments/assets/a5eff07a-8f93-4d93-b740-df64a41add98)
 Berdasarkan output diatas tidak ditemukan adanya missing value, maka dari itu kita tidak perlu melakukan eksekusi drop atau mengisi nilai NaN pada data karena semua data terisi dengan baik sehingga tidak diperlukan adanya penanganan missing value.
 
-### Handling Outlier
+### Cek Outlier
 Saat melakukan pengecekan statistik deskriptif pada dataset, terdeteksi indikasi  adanya outlier pada beberapa variabel, terutama pada trestbps (tekanan darah), chol (kolesterol), dan oldpeak. Dalam menangani outlier, disini menggunakan metode IQR+Median Replacement untuk mempertahankan jumlah data.
 <p>
   <img src="https://github.com/user-attachments/assets/36271e84-a488-495b-9d9e-5077c0333ff9" width="150" />
@@ -81,19 +93,114 @@ Setelah Outlier ditangani data dianggap sudah terdistribusi dengan lebih baik
 ### Handling Duplicate Data
 Pada tahapan ini kita dapat melakukan pengecekan duplikasi data dengan df.`duplicated().sum(). `Setelah melakukan pengecekan ternyata terdapat data yang mengalami duplikasi sebanyak 2 duplikasi sehingga program menghapus data yang duplikat dengan` .drop_duplicates()` dan jumlah data sekatang menjadi 918 baris.
 
-### Data Distribution
+### Data Distribution and Data Visualizatiom
 Berdasarkan grafik tersebut dapat kita lihat maypritas dari data numerik menunjukkan data yang terdistribusi mendekati normal 
-![image](https://github.com/user-attachments/assets/2a265610-3697-49ac-a244-1a66504d80a6)
+
+![image](https://github.com/user-attachments/assets/191867a8-c442-4608-8c24-28d5b046cc7d)
 
 ![image](https://github.com/user-attachments/assets/5b9c0d2a-bf9c-4f4a-a6f0-380da6d9a871)
+
 Hasil Correlation Map diatas beberikan beberapa informasi yaitu :
 *   Fitur yang sangat berkorelasi dengan label target adalah cp (nyeri dada), exang (nyeri dada saat berolahraga), oldpeak, thal (hasil tes thalassemia) dan ca (jumlah pembuluh darah).
 *   Pada hasil tersebut dapat dilihat bahwa jenis kelamin laki laki (sex=1) memiliki resiko penyakit jantung yang lebih tinggi dibandingkan perempuan.
 
 
 ## **4. Data Preparation**
+#### Pembersihan Fitur
+Berikutnya saya akan menghapus kolom source yang berisi nama RS data penyakit ini diambil, alasannya karena fokus saya disini hanya untuk kebutuhan analisis diagnosis
+```df = df.drop('source', axis=1)```
+
+#### Handling Duplicate Data
+Sebagaimana setelah melakukan pengecekan data dapat kita lihat bahwa ada 2 data yang mengalami duplikasi sehingga diperlukan adanya penghapusan data duplikat menggunakan fungsi `.drop_duplicates()`
+``` 
+# Hapus duplikasi data
+df = df.drop_duplicates()
+
+print(f"Jumlah duplikasi data setelah dihapus: {df.duplicated().sum()}")
+
+# Cek ukuran data setelah menghapus duplikasi
+print(f"Jumlah baris data setelah menghapus duplikasi: {len(df)}")
+
+```
+#### Handling Outlier
+
+Kode ini bertujuan untuk menangani outlier dalam dataset dengan cara pertama-tama membuat salinan data sebelum dilakukan modifikasi, kemudian untuk setiap kolom yang mengandung outlier dihitung kuartil pertama (Q1), kuartil ketiga (Q3), dan rentang interkuartil (IQR), lalu menentukan batas bawah dan atas outlier berdasarkan IQR. Data yang berada di luar batas tersebut dianggap outlier dan digantikan nilainya dengan median dari kolom tersebut. Setelah proses penggantian, kode menampilkan jumlah outlier yang diganti, serta statistik deskriptif dan visualisasi distribusi data sebelum dan sesudah penanganan, sehingga memudahkan untuk membandingkan dampak dari proses penanganan outlier terhadap distribusi data.
+
+![image](https://github.com/user-attachments/assets/a90361da-1ca3-4e13-8207-2e676c217932)
+
+```
+# Buat copy dataframe untuk membandingkan sebelum dan sesudah
+df_before = df.copy()
+
+for col in outlier_cols:
+    # Hitung kuartil pertama (Q1) dan kuartil ketiga (Q3)
+    Q1 = df[col].quantile(0.25)
+    Q3 = df[col].quantile(0.75)
+    IQR = Q3 - Q1
+
+    # Tentukan batas bawah dan batas atas untuk outlier
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+
+    # Hitung median kolom
+    median_val = df[col].median()
+
+    # Hitung jumlah outlier sebelum penanganan
+    outliers_before = len(df[(df[col] < lower_bound) | (df[col] > upper_bound)])
+
+    # Ganti outlier dengan median
+    df[col] = df[col].apply(lambda x: median_val if x < lower_bound or x > upper_bound else x)
+
+    print(f"\n--- {col.upper()} ---")
+    print(f"Outlier yang diganti: {outliers_before}")
+    print(f"Nilai pengganti (median): {median_val:.2f}")
+
+print("\n=== PERBANDINGAN HASIL ===")
+print("\nStatistik deskriptif SEBELUM penanganan outlier:")
+print(df_before[outlier_cols].describe())
+
+print("\nStatistik deskriptif SETELAH penanganan outlier:")
+print(df[outlier_cols].describe())
+
+# Visualisasi perbandingan sebelum dan setelah penanganan outlier
+fig, axes = plt.subplots(2, 2, figsize=(15, 10))
+fig.suptitle("Perbandingan Distribusi Sebelum vs Setelah Penanganan Outlier", fontsize=16)
+
+for i, col in enumerate(outlier_cols):
+    # Sebelum penanganan
+    axes[i, 0].hist(df_before[col], bins=30, edgecolor='black', alpha=0.7, color='lightcoral')
+    axes[i, 0].set_title(f'{col} - Sebelum Penanganan')
+    axes[i, 0].set_xlabel(col)
+    axes[i, 0].set_ylabel('Frequency')
+
+    # Setelah penanganan
+    axes[i, 1].hist(df[col], bins=30, edgecolor='black', alpha=0.7, color='lightblue')
+    axes[i, 1].set_title(f'{col} - Setelah Penanganan')
+    axes[i, 1].set_xlabel(col)
+    axes[i, 1].set_ylabel('Frequency')
+
+plt.tight_layout()
+plt.show()
+```
+
+### Membagi pengelompokan jenis data pada fitur
+pada tahapan ini saya mengecek tipe data terhadap kolom yang akan di gunakan untuk permodelan, disini saya menggunakan `df.select_dtypes(include=['number']).columns.tolist()` dan `df.select_dtypes(include=['object']).columns.tolist()`. dapat dilihat pada output dibawah kode tersebut apa saja kolom dengan tipe data numerik. dan untuk kolom kategorikal kosong karena pada dataset memang hanya membutuhkan kolom numerikal untuk proses
+
+```
+# Mengecek tipe data setiap kolom dan mengelompokkannya
+numerical_cols = df.select_dtypes(include=['number']).columns.tolist()
+categorical_cols = df.select_dtypes(include=['object']).columns.tolist()
+
+print("Kolom Numerikal:")
+print(numerical_cols)
+print("\nKolom Kategorikal:")
+categorical_cols
+```
+
 ### Data Splitting
-Dataset tersebut dibagi menjadi data latih (train) dan data uji (testing) dengan proporsi 80:20. Hasil pembagian menghasilkan 734 data training dan 184 data testing.
+Tahapan ini merupakan tahapan sebelum memasuki permodelan. Langkah yang saya lakukan diantaranya :
+* Karena data yang saya gunakan disini sudah berformat numerik dan sudah terdapat label pada data maka saya tidak melakukan Label Encoding.
+* Disini saya membagi dataset menjadi data latih (train) sebesar 80% dan data uji (testing) sebesar 20%
 ```bash  
 # Bagi dataset menjadi training (80%) dan testing (20%)
 X = df.drop('target', axis=1)
@@ -289,8 +396,11 @@ Berdasarkan hasil evaluasi, ketiga model memberikan hasil performa yang baik den
 
 ## **6. Evaluation**
 Proyek ini akan dievaluasi menggunakan beberapa metrik untuk menilai model klasifikasi, diantaranya :
+
 **1. Accuracy (Akurasi)** : Metrik ini mengukur proporsi prediksi dari total prediksi
+
 **2. F1-Score** : Metrik ini mengukur rata rata dari precission dan recal untuk melohat keseimbangan antara hasil false positive dan false negative dari hasil permodelan
+
 **3. Confusion Matrix** : Metrik ini memberikan gambaran detail tentang jumlah True Positive (TP), False Positive (FP), True Negative (TN), dan False Negative (FN). Evaluasi ini penting untuk memahami jenis kesalahan yang dilakukan model.
 
 Berdasarkan hasil _classification report _ diperoleh hasil dari Accuracy dan F1-Score pada masing masing model dilampirkan dibawah ini
