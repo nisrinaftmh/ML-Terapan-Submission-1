@@ -71,10 +71,13 @@ Berikut adalah Fitur yang terdapat dalam dataset:
 
 Pada semua kolom tersebut terdapat 13 kolom dengan tipe data float, 1 kolom dengan tipe data int dan 1 kolom dengan data kategorikal. Pada pembuatan model ini tidak digunakan data _Sourge Tag_ dengan alasan fokus utama prediksi hanya untuk menganalisis adanya penyakit jantung atau tidak pada pasien.
 
-  
+
+### Exploratory Data Analysis (EDA)
 ### Cek Ukuran Data
 Tahapan ini dilakukan untuk memahami isi dataset. hal pertama yang dilakukan adalah memahami dan mengecek isi dari dataset dengan menggunakan `.shape', .info() `dan `.describe()`
 ``` df.shape```
+![image](https://github.com/user-attachments/assets/7a83a7b9-60d1-491a-b65b-e0c077de0df3)
+
 Output pada kode tersebut menunjukkan bahwa dataset terdiri dari 920 baris dan 15 kolom
 
 ### Cek Informasi Data
