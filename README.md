@@ -1,4 +1,4 @@
-# **Laporan Proyek Machine Learning Terapan | Prediksi Penyakit Jantung**"
+# **Laporan Proyek Machine Learning Terapan | Prediksi Penyakit Jantung**
 ###### **Dibuat Oleh : Nisrina Fatimah Parisya**
 ---
 ![image](https://github.com/user-attachments/assets/7d93c22e-32e0-464a-8fe1-159cdfadeff8)
@@ -119,7 +119,7 @@ X_test = scaler.transform(X_test)
 ## **5. Modelling**
 Algoritma yang dipilih dan digunakan untuk proyek ini ditekankan dengan algoritma klasifikasi Random Forest, Logistic Regression dan K-Nearest Neighbour untuk melakukan perbandingan mana performa model yang lebih baik untuk memprediksi dataset ini
 
-####1. Random Forest
+#### 1. Random Forest
 Pada permodelan ini yang saya lakukan adalah :
 * Memanfaatkan library scikit-learn dan
 *   Menggunakan fungsi `RandomForestClassifier()`
@@ -137,7 +137,7 @@ y_pred_dt = rf_model.predict(X_test)
 Pada permodelan ini yang saya lakukan adalah :
 * Memanfaatkan library scikit-learn dan
 *   Menggunakan fungsi `LogisticRegression()`
-* Parameteer yang digunakan adalah random_state=42 yang artinya membuat model dengan random seed agar hasil yang diharapkan bisa konsisten
+* Parameter yang digunakan adalah random_state=42 yang artinya membuat model dengan random seed agar hasil yang diharapkan bisa konsisten
 ```bash  
 from sklearn.linear_model import LogisticRegression
 # Inisialisasi dan latih model Logistic Regression
@@ -194,8 +194,64 @@ Berdasarkan hasil Confussion Matrix diperoleh kesimpulan berikut ini :
 * False Negative berkurang dari 14 menjadi 11 (lebih sedikit pasien sakit yang tidak terdeteksi)
 * False Positive sedikit berkurang dari 19 menjadi 18.
 
+## Evaluation: Model Performance vs Business Understanding
+
+### Hubungan dengan Problem Statements
+
+1. **Bagaimana cara mengembangkan model machine learning yang dapat memprediksi risiko penyakit jantung?**  
+   Problem berhasil dijawab melalui pengembangan dan evaluasi tiga model klasifikasi:
+   - **Random Forest** mencapai akurasi 84% dan F1-score 0.84
+   - **Logistic Regression** akurasi 83% dan F1-score 0.83
+   - **K-Nearest Neighbors (KNN)** akurasi 82% dan F1-score 0.81
+
+   Ketiganya menunjukkan performa yang baik, dan proses mencakup:
+   - Praproses data secara menyeluruh
+   - Pemilihan algoritma yang relevan
+   - Evaluasi metrik klasifikasi (precision, recall, F1-score)
+   - Analisis Confusion Matrix untuk interpretasi prediksi model
+
+2. **Faktor-faktor apa saja yang paling berkorelasi dengan penyakit jantung?**  
+   Telah dijawab melalui:
+   - Analisis korelasi antar fitur
+   - Visualisasi distribusi data
+   - Feature importance dari Random Forest yang mengidentifikasi fitur-fitur dominan dalam prediksi penyakit jantung
+
+### Capaian Goals
+
+1. **Model prediksi risiko penyakit jantung**  
+   Tercapai. Model Random Forest menjadi pilihan terbaik dari sisi akurasi dan F1-score. Logistic Regression menjadi alternatif baik karena recall yang tinggi dan interpretabilitas.
+
+2. **Identifikasi faktor risiko penyakit jantung**  
+   Tercapai. Insight dari EDA dan analisis fitur menunjukkan keterkaitan kuat antara faktor medis (seperti chol, cp, thalach, dan age) dengan risiko penyakit jantung.
+
+### Dampak dari Solusi yang Dirancang
+
+- **Evaluasi multi-model** memberikan dasar kuat untuk pemilihan model terbaik
+- **Random Forest** unggul dari sisi akurasi dan generalisasi
+- **Logistic Regression** menunjukkan recall tinggi (0.87), ideal untuk aplikasi medis di mana deteksi positif lebih diutamakan
+- **KNN** menunjukkan peningkatan pada TP (91 pasien berhasil dideteksi) dan pengurangan FP dibanding model lainnya
+
+### Insight dari Confusion Matrix
+
+- **Random Forest & Logistic Regression**:
+  - 88 pasien sakit terdeteksi dengan benar (True Positive)
+  - 63 pasien sehat terdeteksi dengan benar (True Negative)
+  - 14 pasien sakit tidak terdeteksi (False Negative)
+  - 19 pasien sehat salah diklasifikasikan sebagai sakit (False Positive)
+
+- **KNN**:
+  - TP meningkat menjadi 91, artinya mendeteksi 3 pasien sakit lebih banyak
+  - FP menurun dari 19 menjadi 18, sehingga kesalahan identifikasi pasien sehat juga berkurang
+
 ## **7. Kesimpulan**
-Pada seluruh proses pengembangan Model Machine Learning untuk Prediksi Penyakit jantung dapat disimpulkan bahwa ketiga model tersebut model yaitu Random Forest dengan Skor Accuracy (0.8369) dan F1-Score (0.8364) karena hasilnya lebih komperhensif.
+
+Model yang dikembangkan telah berhasil menjawab seluruh problem statement dan mencapai goals yang ditetapkan. Dari keseluruhan model, **Random Forest** merupakan model terbaik untuk diterapkan pada dataset ini karena memiliki akurasi dan F1-Score tertinggi, yaitu Accuracy sebesar **0.8369** dan F1-Score sebesar **0.8364**. 
+
+Namun, jika dilihat dari hasil **Confusion Matrix**, model **K-Nearest Neighbors (KNN)** dapat dipertimbangkan karena mampu meminimalkan jumlah **False Negative**, yaitu kasus ketika pasien sakit tidak terdeteksi. Hal ini penting dalam konteks medis untuk mengurangi risiko kelalaian dalam mendeteksi pasien yang benar-benar sakit.
+
+Secara keseluruhan, evaluasi menunjukkan bahwa solusi yang diimplementasikan berdampak positif terhadap kualitas prediksi dan akurasi sistem deteksi dini penyakit jantung, serta layak digunakan sebagai alat bantu dalam proses **screening awal** di bidang medis.
+
+
 
 ## **Referensi**
 Rahmada, A. ., & Susanto, E. R. (2025). Peningkatan Akurasi Prediksi Penyakit Jantung dengan Teknik SMOTEENN pada Algoritma Random Forest. _Jurnal Pendidikan Dan Teknologi Indonesia_, 4(12), 795-803. https://doi.org/10.52436/1.jpti.524
