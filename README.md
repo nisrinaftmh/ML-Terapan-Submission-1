@@ -93,10 +93,65 @@ pada tahapan ini kita dapat melakukan pengecekan missing value dalam dataset ter
 Berdasarkan output diatas tidak ditemukan adanya missing value, maka dari itu kita tidak perlu melakukan eksekusi drop atau mengisi nilai NaN pada data karena semua data terisi dengan baik sehingga tidak diperlukan adanya penanganan missing value.
 
 ### Cek Outlier
-Saat melakukan pengecekan statistik deskriptif pada dataset, terdeteksi indikasi  adanya outlier pada beberapa variabel, terutama pada trestbps (tekanan darah), chol (kolesterol), dan oldpeak. Dalam menangani outlier, disini menggunakan metode IQR+Median Replacement untuk mempertahankan jumlah data.
+* Skema pengecekan outlier ini dimulai dengan menentukan kolom-kolom yang akan diperiksa, yaitu 'trestbps' dan 'chol'. 
+* Selanjutnya, dilakukan analisis statistik deskriptif untuk melihat ringkasan data sebelum penanganan outlier. 
+* Kemudian, dibuat visualisasi berupa histogram dan boxplot untuk setiap kolom guna memahami distribusi dan keberadaan outlier secara visual. 
+* Pada masing-masing kolom, dihitung kuartil pertama (Q1), kuartil ketiga (Q3), serta interquartile range (IQR). 
+* Batas bawah dan atas outlier dihitung menggunakan prinsip 1.5 kali IQR dari Q1 dan Q3, kemudian outlier diidentifikasi sebagai nilai yang berada di luar batas tersebut. 
+* Informasi jumlah dan persentase outlier dicatat, dan distribusi data digambarkan dengan histogram dan boxplot agar memudahkan analisis dan pengambilan keputusan terkait penanganan outlier selanjutnya.
+```
+outlier_cols = ['trestbps', 'chol']
+
+print("=== PENGECEKAN OUTLIER ===")
+print("\nStatistik deskriptif sebelum penanganan outlier:")
+print(df[outlier_cols].describe())
+
+# Visualisasi distribusi data sebelum penanganan outlier
+fig, axes = plt.subplots(2, 2, figsize=(15, 10))
+fig.suptitle("Analisis Outlier Sebelum Penanganan", fontsize=16)
+
+for i, col in enumerate(outlier_cols):
+    # Hitung kuartil dan IQR
+    Q1 = df[col].quantile(0.25)
+    Q3 = df[col].quantile(0.75)
+    IQR = Q3 - Q1
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+
+    # Identifikasi outlier
+    outliers = df[(df[col] < lower_bound) | (df[col] > upper_bound)][col]
+
+    print(f"\n--- {col.upper()} ---")
+    print(f"Q1: {Q1:.2f}")
+    print(f"Q3: {Q3:.2f}")
+    print(f"IQR: {IQR:.2f}")
+    print(f"Batas bawah: {lower_bound:.2f}")
+    print(f"Batas atas: {upper_bound:.2f}")
+    print(f"Jumlah outlier: {len(outliers)}")
+    print(f"Persentase outlier: {len(outliers)/len(df)*100:.2f}%")
+    if len(outliers) > 0:
+        print(f"Nilai outlier: {sorted(outliers.values)}")
+
+    # Histogram
+    axes[i, 0].hist(df[col], bins=30, edgecolor='black', alpha=0.7)
+    axes[i, 0].axvline(lower_bound, color='red', linestyle='--', label=f'Lower bound: {lower_bound:.1f}')
+    axes[i, 0].axvline(upper_bound, color='red', linestyle='--', label=f'Upper bound: {upper_bound:.1f}')
+    axes[i, 0].set_title(f'Histogram {col}')
+    axes[i, 0].set_xlabel(col)
+    axes[i, 0].set_ylabel('Frequency')
+    axes[i, 0].legend()
+
+    # Boxplot
+    axes[i, 1].boxplot(df[col])
+    axes[i, 1].set_title(f'Boxplot {col}')
+    axes[i, 1].set_ylabel(col)
+
+plt.tight_layout()
+plt.show()
+```
 <p>
   <img src=https://github.com/user-attachments/assets/d72a1274-f624-4656-9545-3c52166b0d60
-width="150" />
+width="500" />
 </p>
 
 dari yang kita lihat diatas ada beberapa kemungkinan data yang mengalami outlier diantaranya
@@ -104,8 +159,12 @@ dari yang kita lihat diatas ada beberapa kemungkinan data yang mengalami outlier
 *   chol (kolesterol) : alasannya karena kolesterol berada di nilai 0 pada kolom min sangat tidak normal dalam medis
 
 ### Cek Duplicate Data
-Pada tahapan ini kita dapat melakukan pengecekan duplikasi data dengan df.`duplicated().sum(). `Setelah melakukan pengecekan ternyata terdapat data yang mengalami duplikasi sebanyak 2 duplikasi sehingga program menghapus data yang duplikat dengan` .drop_duplicates()` dan jumlah data sekatang menjadi 918 baris.
-
+Pada tahapan ini kita dapat melakukan pengecekan duplikasi data dengan df.`duplicated().sum(). `Setelah melakukan pengecekan ternyata terdapat data yang mengalami duplikasi 
+```
+# cek duplikasi data
+print("Cek Duplikasi Data:")
+print(f"Jumlah duplikasi data sebelum dihapus: {df.duplicated().sum()}")
+```
 
 ### Data Distribution and Data Visualizatiom
 Berdasarkan grafik tersebut dapat kita lihat maypritas dari data numerik menunjukkan data yang terdistribusi mendekati normal 
@@ -116,7 +175,6 @@ Berdasarkan output histogram dari masing masing variabel kita bisa mendapatkan b
 *   Kita sudah memiliki label "target" untuk menandakan penyakit pasien dengan angka 0 yang artinya tidak memiliki penyakit jantung dan 1 yang artinya memuliki penyakit jantung
 *   Mayoritas data numerik menunjukkan distribusi yang mendekati normal
 * Terdapat beberapa variabel yang menunjukkan distribusi miring kanan sehingga kemungkinan akan berimplikasi pada model yang telah dibuat
-
 
 
 ![image](https://github.com/user-attachments/assets/5b9c0d2a-bf9c-4f4a-a6f0-380da6d9a871)
@@ -145,7 +203,10 @@ print(f"Jumlah baris data setelah menghapus duplikasi: {len(df)}")
 ```
 #### Handling Outlier
 
-Kode ini bertujuan untuk menangani outlier dalam dataset dengan cara pertama-tama membuat salinan data sebelum dilakukan modifikasi, kemudian untuk setiap kolom yang mengandung outlier dihitung kuartil pertama (Q1), kuartil ketiga (Q3), dan rentang interkuartil (IQR), lalu menentukan batas bawah dan atas outlier berdasarkan IQR. Data yang berada di luar batas tersebut dianggap outlier dan digantikan nilainya dengan median dari kolom tersebut. Setelah proses penggantian, kode menampilkan jumlah outlier yang diganti, serta statistik deskriptif dan visualisasi distribusi data sebelum dan sesudah penanganan, sehingga memudahkan untuk membandingkan dampak dari proses penanganan outlier terhadap distribusi data.
+Kode ini bertujuan untuk menangani outlier dalam dataset dengan cara 
+1. pertama-tama membuat salinan data sebelum dilakukan modifikasi, kemudian untuk setiap kolom yang mengandung outlier dihitung kuartil pertama (Q1), kuartil ketiga (Q3), dan rentang interkuartil (IQR)
+2. Lalu menentukan batas bawah dan atas outlier berdasarkan IQR. Data yang berada di luar batas tersebut dianggap outlier dan digantikan nilainya dengan median dari kolom tersebut. S
+3. Setelah proses penggantian, kode menampilkan jumlah outlier yang diganti, serta statistik deskriptif dan visualisasi distribusi data sebelum dan sesudah penanganan, sehingga memudahkan untuk membandingkan dampak dari proses penanganan outlier terhadap distribusi data.
 
 ![image](https://github.com/user-attachments/assets/a90361da-1ca3-4e13-8207-2e676c217932)
 
