@@ -425,8 +425,10 @@ Berdasarkan hasil evaluasi, ketiga model memberikan hasil performa yang baik den
 
 
 ## **6. Evaluation**
-Proyek ini akan dievaluasi menggunakan beberapa metrik untuk menilai model klasifikasi, diantaranya :
 
+### Evaluasi Hasil Modelling
+
+Proyek ini akan dievaluasi menggunakan beberapa metrik untuk menilai model klasifikasi, diantaranya :
 **1. Accuracy (Akurasi)** : Metrik ini mengukur proporsi prediksi dari total prediksi
 
 **2. F1-Score** : Metrik ini mengukur rata rata dari precission dan recal untuk melohat keseimbangan antara hasil false positive dan false negative dari hasil permodelan
@@ -470,6 +472,8 @@ Berdasarkan hasil Confussion Matrix diperoleh kesimpulan berikut ini :
 
 ### Evaluasi Bisnis
 
+#### Problem Solving
+
 1. **Bagaimana cara mengembangkan model machine learning yang dapat memprediksi risiko penyakit jantung?**  
    Problem berhasil dijawab melalui pengembangan dan evaluasi tiga model klasifikasi:
    - **Random Forest** mencapai akurasi 84% dan F1-score 0.84
@@ -487,7 +491,7 @@ Berdasarkan hasil Confussion Matrix diperoleh kesimpulan berikut ini :
    - Evaluasi hasil menunjukkan bahwa random forest memiliki tingkat akurasi dan skor f1 paling tinggi dan stabil
 
 
-### Capaian Goals
+#### Capaian Goals
 
 1. **Model prediksi risiko penyakit jantung**  
    Tercapai. Model Random Forest menjadi pilihan terbaik dari sisi akurasi dan F1-score. Logistic Regression dan KNN menjadi alternatif baik karena recall yang tinggi dan interpretabilitas.
@@ -495,7 +499,7 @@ Berdasarkan hasil Confussion Matrix diperoleh kesimpulan berikut ini :
 2. **Identifikasi faktor risiko penyakit jantung**  
    Tercapai. Insight dari EDA dan analisis fitur menunjukkan keterkaitan kuat antara faktor medis (seperti chol, cp, thalach, dan age) dengan risiko penyakit jantung.
 
-### Dampak dari Solusi yang Dirancang
+#### Dampak dari Solusi yang Dirancang
 
 - **Evaluasi multi-model** memberikan dasar kuat untuk pemilihan model terbaik
 - **Random Forest** unggul dari sisi akurasi dan generalisasi
@@ -509,8 +513,6 @@ Model yang dikembangkan telah berhasil menjawab seluruh problem statement dan me
 Namun, jika dilihat dari hasil **Confusion Matrix**, model **K-Nearest Neighbors (KNN)** dapat dipertimbangkan karena mampu meminimalkan jumlah **False Negative**, yaitu kasus ketika pasien sakit tidak terdeteksi. Hal ini penting dalam konteks medis untuk mengurangi risiko kelalaian dalam mendeteksi pasien yang benar-benar sakit.
 
 Secara keseluruhan, evaluasi menunjukkan bahwa solusi yang diimplementasikan berdampak positif terhadap kualitas prediksi dan akurasi sistem deteksi dini penyakit jantung, serta layak digunakan sebagai alat bantu dalam proses **screening penyakit jantung** di bidang medis.
-
-
 
 
 ## **Referensi**
