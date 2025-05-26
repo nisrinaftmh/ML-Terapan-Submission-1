@@ -38,18 +38,17 @@ Terdapat beberapa tahapan yang diperlukan untuk mencapai tujuan proyek tersebut 
 ## **3. Data Understanding**
 Dataset yang digunakan merupakan dataset berjudul "Common Heart Disease (4 Hospitals)  yang dapat diakses melalui kaggle dengan link berikut ini [Common Heart Disease Dataset]( https://www.kaggle.com/datasets/denysskyrda/common-heart-disease-data-4-hospitals). Dataset ini terdiri dari 920 Baris dengan data pasien dengan parameter berupa variabel yang relevan dengan penyakit jantung.
 
-### Cek Ukuran Data
-Tahapan ini dilakukan untuk memahami isi dataset. hal pertama yang dilakukan adalah memahami dan mengecek isi dari dataset dengan menggunakan `.shape', .info() `dan `.describe()`
-``` df.shape```
-Output pada kode tersebut menunjukkan bahwa dataset terdiri dari 920 baris dan 15 kolom
+**Kondisi Data**
+* Tidak ditemukan missing value pada 920 baris dan 15 kolom data.
+* Ditemukan 2 data duplikat yang telah dihapus.
+* Outlier terdeteksi pada variabel trestbps dan chol, dan berhasil ditangani menggunakan metode IQR+Median Replacement.
 
-### Cek Informasi Data
-Disini kita akan melakukan pengecekan tipe data dan melihat informasi dataset dengan fungsi `.info`
-```
-# Melihat info dataset untuk mengetahui tipe data setiap kolom
-df.info()
-```
-
+**Insight**
+- Outlier ditemukan pada variabel trestbps (tekanan darah) dan chol (kolesterol) dengan nilai 0 yang tidak normal secara medis, dan berhasil dikoreksi menggunakan metode IQR+Median Replacement.
+- Korelasi tinggi ditemukan antara cp (nyeri dada), exang (nyeri dada saat olahraga), oldpeak, thal, dan ca dengan target variable, mengindikasikan fitur penting untuk prediksi.
+- Mayoritas data numerik menunjukkan distribusi mendekati normal, mendukung penggunaan algoritma linear.
+- Kolom Source Tag tidak digunakan dalam pemodelan karena hanya menunjukkan asal rumah sakit data.
+  
 ### Variabel-variabel pada Dataset
 Berikut adalah Fitur yang terdapat dalam dataset:
 | No. | Nama Kolom      | Deskripsi                                                                                         | Nilai/Contoh                                            |
@@ -72,6 +71,19 @@ Berikut adalah Fitur yang terdapat dalam dataset:
 
 Pada semua kolom tersebut terdapat 13 kolom dengan tipe data float, 1 kolom dengan tipe data int dan 1 kolom dengan data kategorikal. Pada pembuatan model ini tidak digunakan data _Sourge Tag_ dengan alasan fokus utama prediksi hanya untuk menganalisis adanya penyakit jantung atau tidak pada pasien.
 
+  
+### Cek Ukuran Data
+Tahapan ini dilakukan untuk memahami isi dataset. hal pertama yang dilakukan adalah memahami dan mengecek isi dari dataset dengan menggunakan `.shape', .info() `dan `.describe()`
+``` df.shape```
+Output pada kode tersebut menunjukkan bahwa dataset terdiri dari 920 baris dan 15 kolom
+
+### Cek Informasi Data
+Disini kita akan melakukan pengecekan tipe data dan melihat informasi dataset dengan fungsi `.info`
+```
+# Melihat info dataset untuk mengetahui tipe data setiap kolom
+df.info()
+```
+
 ### Cek Missing Value
 pada tahapan ini kita dapat melakukan pengecekan missing value dalam dataset tersebut diantaranya menggunakan funsgi .`isnull().sum()` untuk mengetahui missing value di setiap kolom
 ![image](https://github.com/user-attachments/assets/a5eff07a-8f93-4d93-b740-df64a41add98)
@@ -80,23 +92,29 @@ Berdasarkan output diatas tidak ditemukan adanya missing value, maka dari itu ki
 ### Cek Outlier
 Saat melakukan pengecekan statistik deskriptif pada dataset, terdeteksi indikasi  adanya outlier pada beberapa variabel, terutama pada trestbps (tekanan darah), chol (kolesterol), dan oldpeak. Dalam menangani outlier, disini menggunakan metode IQR+Median Replacement untuk mempertahankan jumlah data.
 <p>
-  <img src="https://github.com/user-attachments/assets/36271e84-a488-495b-9d9e-5077c0333ff9" width="150" />
-  <img src="https://github.com/user-attachments/assets/c833b939-755f-4d55-a43d-e2f79c5ecfcc" width="150" />
+  <img src=https://github.com/user-attachments/assets/d72a1274-f624-4656-9545-3c52166b0d60
+width="150" />
 </p>
+
 dari yang kita lihat diatas ada beberapa kemungkinan data yang mengalami outlier diantaranya
 *   trestbps (tekanan darah) : alasannya karena tekanan darah di nilai 0 pada kolom min sangat tidak normal dalam medis
 *   chol (kolesterol) : alasannya karena kolesterol berada di nilai 0 pada kolom min sangat tidak normal dalam medis
-Setelah Outlier ditangani data dianggap sudah terdistribusi dengan lebih baik
 
-![image](https://github.com/user-attachments/assets/d7005e9f-5428-4b38-9a9d-256a297f4af4)
-
-### Handling Duplicate Data
+### Cek Duplicate Data
 Pada tahapan ini kita dapat melakukan pengecekan duplikasi data dengan df.`duplicated().sum(). `Setelah melakukan pengecekan ternyata terdapat data yang mengalami duplikasi sebanyak 2 duplikasi sehingga program menghapus data yang duplikat dengan` .drop_duplicates()` dan jumlah data sekatang menjadi 918 baris.
+
 
 ### Data Distribution and Data Visualizatiom
 Berdasarkan grafik tersebut dapat kita lihat maypritas dari data numerik menunjukkan data yang terdistribusi mendekati normal 
 
-![image](https://github.com/user-attachments/assets/191867a8-c442-4608-8c24-28d5b046cc7d)
+![image](https://github.com/user-attachments/assets/faf03b8f-6afb-46f8-9e1c-45504cf63ab4)
+
+Berdasarkan output histogram dari masing masing variabel kita bisa mendapatkan beberapa informasi diantaranya
+*   Kita sudah memiliki label "target" untuk menandakan penyakit pasien dengan angka 0 yang artinya tidak memiliki penyakit jantung dan 1 yang artinya memuliki penyakit jantung
+*   Mayoritas data numerik menunjukkan distribusi yang mendekati normal
+* Terdapat beberapa variabel yang menunjukkan distribusi miring kanan sehingga kemungkinan akan berimplikasi pada model yang telah dibuat
+
+
 
 ![image](https://github.com/user-attachments/assets/5b9c0d2a-bf9c-4f4a-a6f0-380da6d9a871)
 
@@ -197,6 +215,11 @@ print("\nKolom Kategorikal:")
 categorical_cols
 ```
 
+Output :
+
+![image](https://github.com/user-attachments/assets/dc3292eb-f35e-4a06-8fc3-6a2f412c845a)
+
+
 ### Data Splitting
 Tahapan ini merupakan tahapan sebelum memasuki permodelan. Langkah yang saya lakukan diantaranya :
 * Karena data yang saya gunakan disini sudah berformat numerik dan sudah terdapat label pada data maka saya tidak melakukan Label Encoding.
@@ -266,8 +289,10 @@ Random Forest adalah algoritma ensemble learning yang menggabungkan multiple dec
 
 #### Implementasi:
 
-- Model dilatih langsung pada data asli tanpa normalisasi, karena Random Forest tidak sensitif terhadap skala fitur.
-- Menggunakan random_state=42 untuk memastikan reproducibility hasil.
+- Model dilatih langsung pada data asli tanpa normalisasi karena Random Forest tidak sensitif terhadap skala fitur
+- Parameter random_state=42 digunakan untuk memastikan hasil yang konsisten dan dapat direproduksi
+- Model RandomForestClassifier diinisialisasi dan dilatih menggunakan data latih (X_train, y_train)
+- Model digunakan untuk memprediksi label pada data uji (X_test)
 
 ```bash  
 from sklearn.ensemble import RandomForestClassifier
@@ -278,6 +303,7 @@ rf_model.fit(X_train, y_train)
 # Prediksi
 y_pred_dt = rf_model.predict(X_test)
 ```
+
 ### 2. Logistic Regression
 #### Cara Kerja
 
@@ -320,9 +346,13 @@ Logistic Regression adalah algoritma linear classifier yang menggunakan fungsi l
 
 #### Implementasi:
 
-- Model menggunakan solver 'lbfgs' yang cocok untuk dataset kecil hingga menengah
-- Parameter C=1.0 mengontrol strength regularization
+- Model menggunakan solver 'lbfgs' yang cocok untuk dataset kecil hingga menengah.
+- Parameter C=1.0 digunakan untuk mengontrol kekuatan regularisasi, di mana nilai yang lebih kecil berarti regularisasi yang lebih kuat.
+- Parameter random_state=42 digunakan untuk memastikan hasil yang konsisten dan dapat direproduksi.
+- Model LogisticRegression diinisialisasi dan dilatih menggunakan data latih (X_train, y_train).
+- Model digunakan untuk memprediksi label pada data uji (X_test).
 - Menggunakan random_state=42 untuk memastikan reproducibility hasil
+
 ```bash  
 from sklearn.linear_model import LogisticRegression
 # Inisialisasi dan latih model Logistic Regression
@@ -332,7 +362,7 @@ lr_model.fit(X_train, y_train)
 # Prediksi
 y_pred_lr = lr_model.predict(X_test)
 ```
-#### 3. K-Nearest Neighbour
+### 3. K-Nearest Neighbour
 #### Cara Kerja
 
 KNN adalah algoritma lazy learning yang melakukan klasifikasi berdasarkan kedekatan dengan data training. Proses kerja algoritma:
@@ -342,7 +372,6 @@ KNN adalah algoritma lazy learning yang melakukan klasifikasi berdasarkan kedeka
 - Tie Breaking: Menangani kasus seri dengan aturan tertentu
 
 #### Parameter:
-
 - n_neighbors=5 (default)
 - weights='uniform' (default)
 - algorithm='auto' (default)
@@ -373,9 +402,10 @@ KNN adalah algoritma lazy learning yang melakukan klasifikasi berdasarkan kedeka
 
 #### Implementasi:
 
-- Sebelum diterapkan, data dinormalisasi dengan StandardScaler
-- Menggunakan parameter default n_neighbors=5 dan metric Euclidean distance
-- Model dilatih pada data yang telah diskalakan (X_train_scaled, X_test_scaled)
+- Model KNeighborsClassifier digunakan dengan parameter default, yaitu n_neighbors=5 dan metrik jarak Euclidean.
+- Model dilatih menggunakan data latih X_train dan y_train.
+- Prediksi dilakukan pada data uji X_test dan hasilnya disimpan dalam y_pred_knn.
+
 ```bash  
 from sklearn.neighbors import KNeighborsClassifier
 # Inisialisasi dan latih model KNN
@@ -408,6 +438,21 @@ Berdasarkan hasil _classification report _ diperoleh hasil dari Accuracy dan F1-
 <img src="https://github.com/user-attachments/assets/7dfc6659-9b27-404a-a95f-df9c5000c002" width="300"/>
 <img src="https://github.com/user-attachments/assets/4e871694-cd8d-4a1b-8f90-d95778de3d25" width="300"/>
 <img src="https://github.com/user-attachments/assets/249bd675-17c3-4dc2-877d-b46c565a6ec5" width="300"/>
+
+**1. Random Forest**
+* Memiliki akurasi sebesar 83.70% dan weighted F1-score sebesar 0.8365, menunjukkan performa yang stabil dan baik.
+* Dapat memprediksi dengan baik pada kelas mayoritas (pasien sakit), dengan recall tinggi sebesar 0.87 untuk kelas 1.
+
+**2. Logistic Regression**
+* Mencapai akurasi sebesar 83.15% dan weighted F1-score sebesar 0.8309, sangat kompetitif dibanding Random Forest.
+* Memiliki recall tertinggi (0.87) untuk kelas 1 (pasien sakit), menunjukkan kemampuan yang sangat baik dalam mendeteksi pasien sakit.
+* Model ini tergolong sederhana dan interpretable, namun tetap memberikan hasil prediksi yang sangat baik.
+
+**3. K-Nearest Neighbors (KNN)**
+* Memberikan akurasi sebesar 81.52% dan weighted F1-score sebesar 0.8147, tergolong cukup baik.
+* Recall yang tinggi (0.85) untuk kelas 1 membuatnya cocok untuk kasus di mana deteksi positif sangat penting.
+* Namun, precision dan recall untuk kelas 0 lebih rendah dibanding dua model lainnya, sehingga dapat terjadi kesalahan dalam mendeteksi pasien yang tidak sakit.
+
 
 Berdasarkan hasil Confussion Matrix diperoleh kesimpulan berikut ini :
 ![image](https://github.com/user-attachments/assets/21c9e37d-a3e7-4dc0-8032-ed3d4fff3c88)
