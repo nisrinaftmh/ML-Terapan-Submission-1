@@ -41,12 +41,9 @@ Dataset yang digunakan merupakan dataset berjudul "Common Heart Disease (4 Hospi
 **Kondisi Data**
 * Tidak ditemukan missing value pada 920 baris dan 15 kolom data.
 * Ditemukan 2 data duplikat yang telah dihapus.
-* Outlier terdeteksi pada variabel trestbps dan chol, dan berhasil ditangani menggunakan metode IQR+Median Replacement.
 
 **Insight**
-- Outlier ditemukan pada variabel trestbps (tekanan darah) dan chol (kolesterol) dengan nilai 0 yang tidak normal secara medis, dan berhasil dikoreksi menggunakan metode IQR+Median Replacement.
 - Korelasi tinggi ditemukan antara cp (nyeri dada), exang (nyeri dada saat olahraga), oldpeak, thal, dan ca dengan target variable, mengindikasikan fitur penting untuk prediksi.
-- Mayoritas data numerik menunjukkan distribusi mendekati normal, mendukung penggunaan algoritma linear.
 - Kolom Source Tag tidak digunakan dalam pemodelan karena hanya menunjukkan asal rumah sakit data.
   
 ### Variabel-variabel pada Dataset
@@ -92,72 +89,6 @@ pada tahapan ini kita dapat melakukan pengecekan missing value dalam dataset ter
 ![image](https://github.com/user-attachments/assets/a5eff07a-8f93-4d93-b740-df64a41add98)
 Berdasarkan output diatas tidak ditemukan adanya missing value, maka dari itu kita tidak perlu melakukan eksekusi drop atau mengisi nilai NaN pada data karena semua data terisi dengan baik sehingga tidak diperlukan adanya penanganan missing value.
 
-### Cek Outlier
-* Skema pengecekan outlier ini dimulai dengan menentukan kolom-kolom yang akan diperiksa, yaitu 'trestbps' dan 'chol'. 
-* Selanjutnya, dilakukan analisis statistik deskriptif untuk melihat ringkasan data sebelum penanganan outlier. 
-* Kemudian, dibuat visualisasi berupa histogram dan boxplot untuk setiap kolom guna memahami distribusi dan keberadaan outlier secara visual. 
-* Pada masing-masing kolom, dihitung kuartil pertama (Q1), kuartil ketiga (Q3), serta interquartile range (IQR). 
-* Batas bawah dan atas outlier dihitung menggunakan prinsip 1.5 kali IQR dari Q1 dan Q3, kemudian outlier diidentifikasi sebagai nilai yang berada di luar batas tersebut. 
-* Informasi jumlah dan persentase outlier dicatat, dan distribusi data digambarkan dengan histogram dan boxplot agar memudahkan analisis dan pengambilan keputusan terkait penanganan outlier selanjutnya.
-```
-outlier_cols = ['trestbps', 'chol']
-
-print("=== PENGECEKAN OUTLIER ===")
-print("\nStatistik deskriptif sebelum penanganan outlier:")
-print(df[outlier_cols].describe())
-
-# Visualisasi distribusi data sebelum penanganan outlier
-fig, axes = plt.subplots(2, 2, figsize=(15, 10))
-fig.suptitle("Analisis Outlier Sebelum Penanganan", fontsize=16)
-
-for i, col in enumerate(outlier_cols):
-    # Hitung kuartil dan IQR
-    Q1 = df[col].quantile(0.25)
-    Q3 = df[col].quantile(0.75)
-    IQR = Q3 - Q1
-    lower_bound = Q1 - 1.5 * IQR
-    upper_bound = Q3 + 1.5 * IQR
-
-    # Identifikasi outlier
-    outliers = df[(df[col] < lower_bound) | (df[col] > upper_bound)][col]
-
-    print(f"\n--- {col.upper()} ---")
-    print(f"Q1: {Q1:.2f}")
-    print(f"Q3: {Q3:.2f}")
-    print(f"IQR: {IQR:.2f}")
-    print(f"Batas bawah: {lower_bound:.2f}")
-    print(f"Batas atas: {upper_bound:.2f}")
-    print(f"Jumlah outlier: {len(outliers)}")
-    print(f"Persentase outlier: {len(outliers)/len(df)*100:.2f}%")
-    if len(outliers) > 0:
-        print(f"Nilai outlier: {sorted(outliers.values)}")
-
-    # Histogram
-    axes[i, 0].hist(df[col], bins=30, edgecolor='black', alpha=0.7)
-    axes[i, 0].axvline(lower_bound, color='red', linestyle='--', label=f'Lower bound: {lower_bound:.1f}')
-    axes[i, 0].axvline(upper_bound, color='red', linestyle='--', label=f'Upper bound: {upper_bound:.1f}')
-    axes[i, 0].set_title(f'Histogram {col}')
-    axes[i, 0].set_xlabel(col)
-    axes[i, 0].set_ylabel('Frequency')
-    axes[i, 0].legend()
-
-    # Boxplot
-    axes[i, 1].boxplot(df[col])
-    axes[i, 1].set_title(f'Boxplot {col}')
-    axes[i, 1].set_ylabel(col)
-
-plt.tight_layout()
-plt.show()
-```
-<p>
-  <img src=https://github.com/user-attachments/assets/d72a1274-f624-4656-9545-3c52166b0d60
-width="500" />
-</p>
-
-dari yang kita lihat diatas ada beberapa kemungkinan data yang mengalami outlier diantaranya
-*   trestbps (tekanan darah) : alasannya karena tekanan darah di nilai 0 pada kolom min sangat tidak normal dalam medis
-*   chol (kolesterol) : alasannya karena kolesterol berada di nilai 0 pada kolom min sangat tidak normal dalam medis
-
 ### Cek Duplicate Data
 Pada tahapan ini kita dapat melakukan pengecekan duplikasi data dengan df.`duplicated().sum(). `Setelah melakukan pengecekan ternyata terdapat data yang mengalami duplikasi 
 ```
@@ -200,69 +131,6 @@ print(f"Jumlah duplikasi data setelah dihapus: {df.duplicated().sum()}")
 # Cek ukuran data setelah menghapus duplikasi
 print(f"Jumlah baris data setelah menghapus duplikasi: {len(df)}")
 
-```
-#### Handling Outlier
-
-Kode ini bertujuan untuk menangani outlier dalam dataset dengan cara 
-1. pertama-tama membuat salinan data sebelum dilakukan modifikasi, kemudian untuk setiap kolom yang mengandung outlier dihitung kuartil pertama (Q1), kuartil ketiga (Q3), dan rentang interkuartil (IQR)
-2. Lalu menentukan batas bawah dan atas outlier berdasarkan IQR. Data yang berada di luar batas tersebut dianggap outlier dan digantikan nilainya dengan median dari kolom tersebut. S
-3. Setelah proses penggantian, kode menampilkan jumlah outlier yang diganti, serta statistik deskriptif dan visualisasi distribusi data sebelum dan sesudah penanganan, sehingga memudahkan untuk membandingkan dampak dari proses penanganan outlier terhadap distribusi data.
-
-![image](https://github.com/user-attachments/assets/a90361da-1ca3-4e13-8207-2e676c217932)
-
-```
-# Buat copy dataframe untuk membandingkan sebelum dan sesudah
-df_before = df.copy()
-
-for col in outlier_cols:
-    # Hitung kuartil pertama (Q1) dan kuartil ketiga (Q3)
-    Q1 = df[col].quantile(0.25)
-    Q3 = df[col].quantile(0.75)
-    IQR = Q3 - Q1
-
-    # Tentukan batas bawah dan batas atas untuk outlier
-    lower_bound = Q1 - 1.5 * IQR
-    upper_bound = Q3 + 1.5 * IQR
-
-    # Hitung median kolom
-    median_val = df[col].median()
-
-    # Hitung jumlah outlier sebelum penanganan
-    outliers_before = len(df[(df[col] < lower_bound) | (df[col] > upper_bound)])
-
-    # Ganti outlier dengan median
-    df[col] = df[col].apply(lambda x: median_val if x < lower_bound or x > upper_bound else x)
-
-    print(f"\n--- {col.upper()} ---")
-    print(f"Outlier yang diganti: {outliers_before}")
-    print(f"Nilai pengganti (median): {median_val:.2f}")
-
-print("\n=== PERBANDINGAN HASIL ===")
-print("\nStatistik deskriptif SEBELUM penanganan outlier:")
-print(df_before[outlier_cols].describe())
-
-print("\nStatistik deskriptif SETELAH penanganan outlier:")
-print(df[outlier_cols].describe())
-
-# Visualisasi perbandingan sebelum dan setelah penanganan outlier
-fig, axes = plt.subplots(2, 2, figsize=(15, 10))
-fig.suptitle("Perbandingan Distribusi Sebelum vs Setelah Penanganan Outlier", fontsize=16)
-
-for i, col in enumerate(outlier_cols):
-    # Sebelum penanganan
-    axes[i, 0].hist(df_before[col], bins=30, edgecolor='black', alpha=0.7, color='lightcoral')
-    axes[i, 0].set_title(f'{col} - Sebelum Penanganan')
-    axes[i, 0].set_xlabel(col)
-    axes[i, 0].set_ylabel('Frequency')
-
-    # Setelah penanganan
-    axes[i, 1].hist(df[col], bins=30, edgecolor='black', alpha=0.7, color='lightblue')
-    axes[i, 1].set_title(f'{col} - Setelah Penanganan')
-    axes[i, 1].set_xlabel(col)
-    axes[i, 1].set_ylabel('Frequency')
-
-plt.tight_layout()
-plt.show()
 ```
 
 ### Membagi pengelompokan jenis data pada fitur
@@ -497,84 +365,67 @@ Proyek ini akan dievaluasi menggunakan beberapa metrik untuk menilai model klasi
 
 **2. F1-Score** : Metrik ini mengukur rata rata dari precission dan recal untuk melohat keseimbangan antara hasil false positive dan false negative dari hasil permodelan
 
-**3. Confusion Matrix** : Metrik ini memberikan gambaran detail tentang jumlah True Positive (TP), False Positive (FP), True Negative (TN), dan False Negative (FN). Evaluasi ini penting untuk memahami jenis kesalahan yang dilakukan model.
-
 Berdasarkan hasil _classification report _ diperoleh hasil dari Accuracy dan F1-Score pada masing masing model dilampirkan dibawah ini
 
-<img src="https://github.com/user-attachments/assets/7dfc6659-9b27-404a-a95f-df9c5000c002" width="300"/>
-<img src="https://github.com/user-attachments/assets/4e871694-cd8d-4a1b-8f90-d95778de3d25" width="300"/>
-<img src="https://github.com/user-attachments/assets/249bd675-17c3-4dc2-877d-b46c565a6ec5" width="300"/>
+<img src="https://github.com/user-attachments/assets/88b8805a-779a-494d-8cb0-314d56c7f4c3
+" width="300"/>
+<img src="https://github.com/user-attachments/assets/0cdf58da-7b0f-4ec3-b9b2-090ad1ef4871
+" width="300"/>
+<img src="https://github.com/user-attachments/assets/dc3b1703-36a3-46f4-a962-ff5be1b4a6b9
+" width="300"/>
 
 **1. Random Forest**
-* Memiliki akurasi sebesar 83.70% dan weighted F1-score sebesar 0.8365, menunjukkan performa yang stabil dan baik.
-* Dapat memprediksi dengan baik pada kelas mayoritas (pasien sakit), dengan recall tinggi sebesar 0.87 untuk kelas 1.
+* Memiliki akurasi sebesar 84,23 % dan weighted F1-score sebesar 0.8423, menunjukkan performa yang stabil dan baik.
+* Dapat memprediksi dengan baik pada kelas mayoritas (pasien sakit), dengan recall tinggi sebesar 0.89 untuk kelas 1.
+
 
 **2. Logistic Regression**
-* Mencapai akurasi sebesar 83.15% dan weighted F1-score sebesar 0.8309, sangat kompetitif dibanding Random Forest.
-* Memiliki recall tertinggi (0.87) untuk kelas 1 (pasien sakit), menunjukkan kemampuan yang sangat baik dalam mendeteksi pasien sakit.
+* Mencapai akurasi sebesar 82.06% dan weighted F1-score sebesar 0.82065
+* Memiliki recall tertinggi (0.86) untuk kelas 1 (pasien sakit), menunjukkan kemampuan yang sangat baik dalam mendeteksi pasien sakit.
 * Model ini tergolong sederhana dan interpretable, namun tetap memberikan hasil prediksi yang sangat baik.
 
 **3. K-Nearest Neighbors (KNN)**
-* Memberikan akurasi sebesar 81.52% dan weighted F1-score sebesar 0.8147, tergolong cukup baik.
-* Recall yang tinggi (0.85) untuk kelas 1 membuatnya cocok untuk kasus di mana deteksi positif sangat penting.
-* Namun, precision dan recall untuk kelas 0 lebih rendah dibanding dua model lainnya, sehingga dapat terjadi kesalahan dalam mendeteksi pasien yang tidak sakit.
-
-
-Berdasarkan hasil Confussion Matrix diperoleh kesimpulan berikut ini :
-![image](https://github.com/user-attachments/assets/21c9e37d-a3e7-4dc0-8032-ed3d4fff3c88)
-1.Random Forest dan Logistic Regression memiliki hasil confusion matrix yang identik, menunjukkan pola prediksi yang sama:
-* 88 pasien dengan penyakit jantung terdeteksi dengan benar (TP)
-* 63 pasien tanpa penyakit jantung terdeteksi dengan benar (TN)
-* 14 pasien dengan penyakit jantung tidak terdeteksi (FN)
-* 19 pasien tanpa penyakit jantung diidentifikasi memiliki penyakit (FP)
-
-
-2. KNN menunjukkan performa yang lebih baik dalam beberapa aspek:
-* True Positive meningkat menjadi 91 (berhasil mendeteksi 3 pasien sakit lebih banyak)
-* False Negative berkurang dari 14 menjadi 11 (lebih sedikit pasien sakit yang tidak terdeteksi)
-* False Positive sedikit berkurang dari 19 menjadi 18.
+* Memberikan akurasi sebesar 84,2% dan weighted F1-score sebesar 0.842, yang setara dnegan hasil random forest.
+* Recall yang tinggi (0.89) untuk kelas 1 membuatnya cocok untuk kasus di mana deteksi positif sangat penting.
 
 ### Evaluasi Bisnis
 
 #### Problem Solving
-
 1. **Bagaimana cara mengembangkan model machine learning yang dapat memprediksi risiko penyakit jantung?**  
    Problem berhasil dijawab melalui pengembangan dan evaluasi tiga model klasifikasi:
-   - **Random Forest** mencapai akurasi 84% dan F1-score 0.84
-   - **Logistic Regression** akurasi 83% dan F1-score 0.83
-   - **K-Nearest Neighbors (KNN)** akurasi 82% dan F1-score 0.81
+   - **Random Forest** mencapai akurasi 84% dan F1-score 0.842
+   - **Logistic Regression** akurasi 83% dan F1-score 0.820
+   - **K-Nearest Neighbors (KNN)** akurasi 84% dan F1-score 0.842
 
    Ketiganya menunjukkan performa yang baik, dan proses mencakup:
    - Praproses data secara menyeluruh
    - Pemilihan algoritma yang relevan
    - Evaluasi metrik klasifikasi (precision, recall, F1-score)
-   - Analisis Confusion Matrix untuk interpretasi prediksi model
+
 
 2. **Bagaimana Hasil Prediksi yang dilakukan? Permodelan apa yang paling efektif untuk digunakan?**  
    Telah dijawab melalui:
-   - Evaluasi hasil menunjukkan bahwa random forest memiliki tingkat akurasi dan skor f1 paling tinggi dan stabil
+   - Evaluasi hasil menunjukkan bahwa random forest dan knn memiliki tingkat akurasi dan skor f1 paling tinggi dan stabil
 
 
-#### Capaian Goals
+### Capaian Goals
 
 1. **Model prediksi risiko penyakit jantung**  
-   Tercapai. Model Random Forest menjadi pilihan terbaik dari sisi akurasi dan F1-score. Logistic Regression dan KNN menjadi alternatif baik karena recall yang tinggi dan interpretabilitas.
+   Tercapai. Model Random Forest dan KNN menjadi pilihan terbaik dari sisi akurasi dan F1-score. Logistic Regression menjadi alternatif baik karena recall yang tinggi dan interpretabilitas.
 
 2. **Identifikasi faktor risiko penyakit jantung**  
    Tercapai. Insight dari EDA dan analisis fitur menunjukkan keterkaitan kuat antara faktor medis (seperti chol, cp, thalach, dan age) dengan risiko penyakit jantung.
 
-#### Dampak dari Solusi yang Dirancang
+### Dampak dari Solusi yang Dirancang
 
 - **Evaluasi multi-model** memberikan dasar kuat untuk pemilihan model terbaik
-- **Random Forest** unggul dari sisi akurasi dan generalisasi
+- **Random Forest** dan **KNN** unggul dari sisi akurasi dan generalisasi
 - **Logistic Regression** menunjukkan recall tinggi (0.87), ideal untuk aplikasi medis di mana deteksi positif lebih diutamakan
-- **KNN** menunjukkan peningkatan pada TP (91 pasien berhasil dideteksi) dan pengurangan FP dibanding model lainnya
+
 
 ## **7. Kesimpulan**
 
-Model yang dikembangkan telah berhasil menjawab seluruh problem statement dan mencapai goals yang ditetapkan. Dari keseluruhan model, **Random Forest** merupakan model terbaik untuk diterapkan pada dataset ini karena memiliki akurasi dan F1-Score tertinggi, yaitu Accuracy sebesar **0.8369** dan F1-Score sebesar **0.8364**.
-
-Namun, jika dilihat dari hasil **Confusion Matrix**, model **K-Nearest Neighbors (KNN)** dapat dipertimbangkan karena mampu meminimalkan jumlah **False Negative**, yaitu kasus ketika pasien sakit tidak terdeteksi. Hal ini penting dalam konteks medis untuk mengurangi risiko kelalaian dalam mendeteksi pasien yang benar-benar sakit.
+Model yang dikembangkan telah berhasil menjawab seluruh problem statement dan mencapai goals yang ditetapkan. Dari keseluruhan model, **Random Forest** dan **KNN** merupakan model terbaik untuk diterapkan pada dataset ini karena memiliki akurasi dan F1-Score tertinggi, yaitu Accuracy sebesar **0.8423** dan F1-Score sebesar **0.8414**.
 
 Secara keseluruhan, evaluasi menunjukkan bahwa solusi yang diimplementasikan berdampak positif terhadap kualitas prediksi dan akurasi sistem deteksi dini penyakit jantung, serta layak digunakan sebagai alat bantu dalam proses **screening penyakit jantung** di bidang medis.
 
