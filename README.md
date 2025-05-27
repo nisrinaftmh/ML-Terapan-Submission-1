@@ -423,7 +423,8 @@ Berdasarkan hasil _classification report _ diperoleh hasil dari Accuracy dan F1-
 
 - **Evaluasi multi-model** memberikan dasar kuat untuk pemilihan model terbaik
 - **Random Forest** dan **KNN** unggul dari sisi akurasi dan generalisasi
-- **Logistic Regression** menunjukkan recall tinggi (0.87), ideal untuk aplikasi medis di mana deteksi positif lebih diutamakan
+- **Random Forest** dan **KNN** menunjukkan recall tinggi (0.89), ideal untuk aplikasi medis di mana deteksi positif lebih diutamakan
+- **Logistic Regression** juga memiliki angka recall yang cukup ideal di angka 0,86
 
 
 ## **7. Kesimpulan**
