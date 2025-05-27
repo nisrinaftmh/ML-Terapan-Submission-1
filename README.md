@@ -353,9 +353,9 @@ Pemilihan Model Terbaik
 Berdasarkan hasil evaluasi, ketiga model memberikan hasil performa yang baik dengan akurasi di atas 80%. Perbandingan performa model adalah sebagai berikut:
 | Model                     | Accuracy | F1-Score |
 |---------------------------|----------|----------|
-| Random Forest             | 0.8369   | 0.8364   |
-| Logistic Regression       | 0.8315   | 0.8308   |
-| K-Nearest Neighbors (KNN) | 0.8152   | 0.8145   |
+| Random Forest             | 0.8423   | 0.8414   |
+| Logistic Regression       | 0.8206   | 0.8199   |
+| K-Nearest Neighbors (KNN) | 0.8423   | 0.8414   |
 
 
 ## **6. Evaluation**
@@ -363,6 +363,7 @@ Berdasarkan hasil evaluasi, ketiga model memberikan hasil performa yang baik den
 ### Evaluasi Hasil Modelling
 
 Proyek ini akan dievaluasi menggunakan beberapa metrik untuk menilai model klasifikasi, diantaranya :
+
 **1. Accuracy (Akurasi)** : Metrik ini mengukur proporsi prediksi dari total prediksi
 
 **2. F1-Score** : Metrik ini mengukur rata rata dari precission dan recal untuk melohat keseimbangan antara hasil false positive dan false negative dari hasil permodelan
