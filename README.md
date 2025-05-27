@@ -73,12 +73,17 @@ Pada semua kolom tersebut terdapat 13 kolom dengan tipe data float, 1 kolom deng
 ### Cek Ukuran Data
 Tahapan ini dilakukan untuk memahami isi dataset. hal pertama yang dilakukan adalah memahami dan mengecek isi dari dataset dengan menggunakan `.shape', .info() `dan `.describe()`
 ``` df.shape```
-![image](https://github.com/user-attachments/assets/7a83a7b9-60d1-491a-b65b-e0c077de0df3)
+
+![image](https://github.com/user-attachments/assets/56b97b53-6144-442c-973f-cff37ec4b97a)
+
 
 Output pada kode tersebut menunjukkan bahwa dataset terdiri dari 920 baris dan 15 kolom
 
 ### Cek Informasi Data
 Disini kita akan melakukan pengecekan tipe data dan melihat informasi dataset dengan fungsi `.info`
+
+![image](https://github.com/user-attachments/assets/89a735e5-9fc6-4d28-ab4f-2a916c4416c5)
+
 ```
 # Melihat info dataset untuk mengetahui tipe data setiap kolom
 df.info()
@@ -91,23 +96,16 @@ Berdasarkan output diatas tidak ditemukan adanya missing value, maka dari itu ki
 
 ### Cek Duplicate Data
 Pada tahapan ini kita dapat melakukan pengecekan duplikasi data dengan df.`duplicated().sum(). `Setelah melakukan pengecekan ternyata terdapat data yang mengalami duplikasi 
+
+![image](https://github.com/user-attachments/assets/0fbd84fe-66fe-4500-a839-15de82b1f621)
+
 ```
 # cek duplikasi data
 print("Cek Duplikasi Data:")
 print(f"Jumlah duplikasi data sebelum dihapus: {df.duplicated().sum()}")
 ```
 
-### Data Distribution and Data Visualizatiom
-Berdasarkan grafik tersebut dapat kita lihat maypritas dari data numerik menunjukkan data yang terdistribusi mendekati normal 
-
-![image](https://github.com/user-attachments/assets/faf03b8f-6afb-46f8-9e1c-45504cf63ab4)
-
-Berdasarkan output histogram dari masing masing variabel kita bisa mendapatkan beberapa informasi diantaranya
-*   Kita sudah memiliki label "target" untuk menandakan penyakit pasien dengan angka 0 yang artinya tidak memiliki penyakit jantung dan 1 yang artinya memuliki penyakit jantung
-*   Mayoritas data numerik menunjukkan distribusi yang mendekati normal
-* Terdapat beberapa variabel yang menunjukkan distribusi miring kanan sehingga kemungkinan akan berimplikasi pada model yang telah dibuat
-
-
+### Data Distribution
 ![image](https://github.com/user-attachments/assets/5b9c0d2a-bf9c-4f4a-a6f0-380da6d9a871)
 
 Hasil Correlation Map diatas beberikan beberapa informasi yaitu :
@@ -122,6 +120,10 @@ Berikutnya saya akan menghapus kolom source yang berisi nama RS data penyakit in
 
 #### Handling Duplicate Data
 Sebagaimana setelah melakukan pengecekan data dapat kita lihat bahwa ada 2 data yang mengalami duplikasi sehingga diperlukan adanya penghapusan data duplikat menggunakan fungsi `.drop_duplicates()`
+
+![image](https://github.com/user-attachments/assets/52c5c2dd-cd44-48cd-bdfb-fd41e78649c5)
+
+
 ``` 
 # Hapus duplikasi data
 df = df.drop_duplicates()
