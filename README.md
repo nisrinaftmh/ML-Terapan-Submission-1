@@ -25,12 +25,12 @@ Manfaat yang dapat dirasakan pasien diantaranya:
 2. Bagaimana Hasil Prediksi yang dilakukan? Permodelan apa yang paling efektif untuk digunakan?
 
 ## Goals
-1. Membuat model machikne learning yang dapat memprediksi risiko penyakit jantung pada pasien
-2. Melakukan identifikasi fator yang mempengaruhi terjadinya penyakit jantung
+1. Membuat model machine learning yang dapat memprediksi risiko penyakit jantung pada pasien
+2. Menentukan permodelan yang cocok untuk analisis prediksi penyakit jantung
 
 ## Solution Statement
 Terdapat beberapa tahapan yang diperlukan untuk mencapai tujuan proyek tersebut diantaranya
-1. Melakukan pemahaman data dan mengeksplorasi data dengan melihat potensi outlier, melakukan pembersihan data dan melihat korelasi antar variabel.
+1. Melakukan pemahaman data, melakukan pembersihan data dan melihat korelasi antar variabel.
 2. Membuat permodelan Machine Learning untuk dataset yang digunakan dengan menggunakan permodelan Random Forest, Logistic Regression dan K-Nearest Neighbour.
 3. Menerapkan StandardSCaler dalam menormalisasi data agar meningkatkan akurasi model
 4. Melakukan Evaluasi dengan menggunakan metrik Akurasi, Precision, Recall dan F1 Score
